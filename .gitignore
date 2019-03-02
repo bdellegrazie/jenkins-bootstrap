@@ -1,0 +1,14 @@
+# Intellij
+.idea/
+*.iml
+
+# Eclipse
+.settings/
+.project
+.pydevproject
+
+# OS X
+.DS_Store
+
+/home/
+!/home/.gitignore
