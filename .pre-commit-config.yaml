@@ -3,14 +3,16 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.1.0
     hooks:
-      -  id: trailing-whitespace
-         files: \.(js|rb|md|py|sh|txt|yaml|yml|groovy)$
-      - id: check-yaml
-        files: \.(yaml|yml)$
+      - id: trailing-whitespace
+        files: \.(js|rb|md|py|sh|txt|yaml|yml|groovy)$
       - id: check-merge-conflict
         files: \.(js|rb|md|py|sh|txt|yaml|yml|groovy)$
       - id: check-symlinks
       - id: end-of-file-fixer
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.14.0
+    hooks:
+      - id: yamllint
   - repo: https://github.com/Lucas-C/pre-commit-hooks-nodejs
     rev: v1.1.0
     hooks:

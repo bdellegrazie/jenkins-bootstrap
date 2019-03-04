@@ -1,0 +1,58 @@
+---
+configuration-as-code:
+  version: 1
+
+jenkins:
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+  clouds:
+    - docker:
+        name: "docker"
+        dockerApi:
+          dockerHost:
+            uri: "unix:///var/run/docker.sock"
+        templates:
+          - labelString: "docker-agent"
+            dockerTemplateBase:
+              image: "jenkins/slave"
+              volumes:
+                - hello:/hello
+                - world:/world
+              environmentsString: |
+                hello=world
+                foo=bar
+            remoteFs: "/home/jenkins/agent"
+            connector:
+              attach:
+                user: "jenkins"
+            instanceCapStr: "10"
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: true
+  disableRememberMe: true
+  markupFormatter: rawHtml
+  mode: NORMAL
+  numExecutors: 1
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "admin"
+  slaveAgentPort: 50000
+  systemMessage: "Jenkins configured automatically by Jenkins Configuration as Code Plugin\n\n"
+
+security:
+  remotingCLI:
+    enabled: false
+  sSHD:
+    port: 50001
+
+unclassified:
+  location:
+    adminAddress: example@example.com
+    url: "http://localhost:8081/"
+  timestamperConfig:
+    allPipelines: true
+    systemTimeFormat: "yyyy-MM-dd HH:mm:ss.SSS' | '"
