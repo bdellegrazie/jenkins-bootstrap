@@ -18,7 +18,6 @@ JENKINS_OPTS=--httpPort=8081
 # Run
 docker run \
   -p 8081:8081 \
-  -p 50000:50000 \
   -p 50001:50001 \
   -u ${_UID}:${_GID} \
   --group-add ${_GID_DOCKER} \

@@ -40,7 +40,7 @@ jenkins:
       users:
         - id: "admin"
           password: "admin"
-  slaveAgentPort: 50000
+  slaveAgentPort: -1
   systemMessage: "Jenkins configured automatically by Jenkins Configuration as Code Plugin\n\n"
 
 security:

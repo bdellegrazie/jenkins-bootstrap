@@ -1,3 +1,3 @@
 #!/bin/bash
-docker pull jenkinsci/blueocean:latest
+docker pull jenkins/jenkins:lts
 docker build -t bdg/jenkins:latest .
