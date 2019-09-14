@@ -46,6 +46,7 @@ jenkins:
     enabled: false
 
 security:
+  masterKillSwitchConfiguration: false
   sSHD:
     port: 50001
 

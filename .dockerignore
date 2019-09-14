@@ -1,0 +1,6 @@
+.git/
+home/
+*.sh
+.pre-commit-config.yaml
+.yamllint
+README.md
