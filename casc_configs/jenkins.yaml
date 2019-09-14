@@ -43,10 +43,9 @@ jenkins:
   slaveAgentPort: -1
   systemMessage: "Jenkins configured automatically by Jenkins Configuration as Code Plugin\n\n"
   remotingSecurity:
-    enabled: false
+    enabled: true
 
 security:
-  masterKillSwitchConfiguration: false
   sSHD:
     port: 50001
 
