@@ -32,6 +32,7 @@ cloudbees-folder:latest
 config-file-provider:latest
 configuration-as-code:latest
 configuration-as-code-support:latest
+configuration-as-code-groovy:latest
 credentials-binding:latest
 credentials:latest
 display-url-api:latest

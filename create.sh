@@ -23,7 +23,6 @@ docker run \
   --group-add ${_GID_DOCKER} \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v ${PWD}/home:/var/jenkins_home \
-  -v ${PWD}/init.groovy.d:/var/jenkins_home/init.groovy.d \
   -v ${PWD}/casc_configs:/var/jenkins_home/casc_configs \
   -e TRY_UPGRADE_IF_NO_MARKER=true \
   -e CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/ \
