@@ -29,6 +29,7 @@ bouncycastle-api:latest
 branch-api:latest
 cloudbees-bitbucket-branch-source:latest
 cloudbees-folder:latest
+command-launcher:latest
 config-file-provider:latest
 configuration-as-code:latest
 configuration-as-code-support:latest

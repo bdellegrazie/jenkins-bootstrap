@@ -42,10 +42,10 @@ jenkins:
           password: "admin"
   slaveAgentPort: -1
   systemMessage: "Jenkins configured automatically by Jenkins Configuration as Code Plugin\n\n"
+  remotingSecurity:
+    enabled: false
 
 security:
-  remotingCLI:
-    enabled: false
   sSHD:
     port: 50001
 
