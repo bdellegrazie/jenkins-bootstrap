@@ -50,6 +50,8 @@ security:
     port: 50001
 
 unclassified:
+  globalDefaultFlowDurabilityLevel:
+    durabilityHint: PERFORMANCE_OPTIMIZED
   location:
     adminAddress: example@example.com
     url: "http://localhost:8081/"
