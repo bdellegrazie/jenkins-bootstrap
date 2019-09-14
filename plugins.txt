@@ -74,6 +74,7 @@ pipeline-model-extensions:latest
 pipeline-stage-step:latest
 pipeline-stage-tags-metadata:latest
 plain-credentials:latest
+platformlabeler:latest
 pubsub-light:latest
 scm-api:latest
 script-security:latest
