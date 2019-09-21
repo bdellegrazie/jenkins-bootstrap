@@ -12,3 +12,5 @@
 
 /home/
 !/home/.gitignore
+
+/jenkins-bootstrap-deploy.*
