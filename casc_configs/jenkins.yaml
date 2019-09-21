@@ -49,11 +49,25 @@ security:
   sSHD:
     port: 50001
 
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - basicSSHUserPrivateKey:
+              scope: SYSTEM
+              id: jenkins_bootstrap_deploy_key
+              username: git
+              passphrase: ~
+              description: "Jenkins Bootstrap Deploy Key"
+              privateKeySource:
+                directEntry:
+                  privateKey: ${BOOTSTRAP_SSH_DEPLOY_KEY}
+
 unclassified:
   globalDefaultFlowDurabilityLevel:
     durabilityHint: PERFORMANCE_OPTIMIZED
   location:
-    adminAddress: example@example.com
+    adminAddress: brett.dellegrazie@gmail.com
     url: "http://localhost:8081/"
   timestamperConfig:
     allPipelines: true

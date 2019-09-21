@@ -43,11 +43,12 @@ docker-plugin:latest
 docker-workflow:latest
 durable-task:latest
 favorite:latest
-git-client:latest
 github-api:latest
 github-branch-source:latest
 github:latest
 git:latest
+git-client:latest
+git-parameter:latest
 git-server:latest
 handy-uri-templates-2-api:latest
 htmlpublisher:latest
