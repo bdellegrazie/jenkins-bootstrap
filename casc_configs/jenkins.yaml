@@ -3,6 +3,8 @@ configuration-as-code:
   version: 1
 
 jenkins:
+  agentProtocols:
+    - jnlp4
   authorizationStrategy:
     loggedInUsersCanDoAnything:
       allowAnonymousRead: false
