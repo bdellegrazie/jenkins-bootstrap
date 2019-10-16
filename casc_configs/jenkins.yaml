@@ -4,7 +4,8 @@ configuration-as-code:
 
 jenkins:
   agentProtocols:
-    - jnlp4
+    - JNLP4-Connect
+    - Ping
   authorizationStrategy:
     loggedInUsersCanDoAnything:
       allowAnonymousRead: false
@@ -33,23 +34,23 @@ jenkins:
     standard:
       excludeClientIPFromCrumb: true
   disableRememberMe: true
-  markupFormatter: rawHtml
+  markupFormatter: plainText
   mode: NORMAL
-  numExecutors: 1
+  numExecutors: 2
+  remotingSecurity:
+    enabled: true
   securityRealm:
     local:
       allowsSignup: false
       users:
         - id: "admin"
           password: "admin"
-  slaveAgentPort: -1
+  slaveAgentPort: 50000
   systemMessage: "Jenkins configured automatically by Jenkins Configuration as Code Plugin\n\n"
-  remotingSecurity:
-    enabled: true
 
 security:
   sSHD:
-    port: 50001
+    port: -1
 
 credentials:
   system:
