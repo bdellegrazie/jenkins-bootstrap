@@ -57,7 +57,7 @@ credentials:
     domainCredentials:
       - credentials:
           - basicSSHUserPrivateKey:
-              scope: SYSTEM
+              scope: GLOBAL
               id: jenkins_bootstrap_deploy_key
               username: git
               passphrase: ~
