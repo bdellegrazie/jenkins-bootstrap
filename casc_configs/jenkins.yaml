@@ -17,14 +17,22 @@ jenkins:
             uri: "unix:///var/run/docker.sock"
         templates:
           - labelString: "docker-agent"
+            name: docker
             dockerTemplateBase:
-              image: "jenkins/slave"
-              volumes:
-                - hello:/hello
-                - world:/world
-              environmentsString: |
-                hello=world
-                foo=bar
+              image: "jenkins/jnlp-slave"
+              volumes: ~
+              environmentsString: ~
+            remoteFs: "/home/jenkins/agent"
+            connector:
+              attach:
+                user: "jenkins"
+            instanceCapStr: "10"
+          - labelString: "docker-agent-node"
+            name: docker-node
+            dockerTemplateBase:
+              image: "jenkins/jnlp-slave-node"
+              volumes: ~
+              environmentsString: ~
             remoteFs: "/home/jenkins/agent"
             connector:
               attach:
@@ -67,6 +75,9 @@ credentials:
                   privateKey: ${BOOTSTRAP_SSH_DEPLOY_KEY}
 
 unclassified:
+  gitSCM:
+    globalConfigEmail: "brett.dellegrazie+jenkins@gmail.com"
+    globalConfigName: "Jenkins CI"
   globalDefaultFlowDurabilityLevel:
     durabilityHint: PERFORMANCE_OPTIMIZED
   location:
@@ -75,3 +86,8 @@ unclassified:
   timestamperConfig:
     allPipelines: true
     systemTimeFormat: "yyyy-MM-dd HH:mm:ss.SSS' | '"
+tool:
+  git:
+    installations:
+      - home: "git"
+        name: "Default"
