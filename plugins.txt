@@ -64,7 +64,6 @@ mailer:latest
 matrix-auth:latest
 matrix-project:latest
 mercurial:latest
-pipeline:latest
 pipeline-build-step:latest
 pipeline-graph-analysis:latest
 pipeline-input-step:latest
