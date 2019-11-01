@@ -9,6 +9,7 @@ repos:
         files: \.(js|rb|md|py|sh|txt|yaml|yml|groovy)$
       - id: check-symlinks
       - id: end-of-file-fixer
+        exclude: auth0
   - repo: https://github.com/adrienverge/yamllint.git
     rev: v1.18.0
     hooks:
@@ -17,3 +18,11 @@ repos:
     rev: v1.1.0
     hooks:
       - id: dockerfile_lint
+  - repo: https://github.com/Yelp/detect-secrets.git
+    rev: v0.13.0
+    hooks:
+    -   id: detect-secrets
+        args:
+          - '--baseline'
+          - '.secrets.baseline'
+        exclude: package-lock\.json|Pipfile\.lock|.*/tests/.*
