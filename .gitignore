@@ -17,3 +17,7 @@
 !/home/.gitignore
 
 /jenkins-bootstrap-deploy.*
+
+# git-secret
+/.gitsecret/keys/random_seed
+!*.encrypted
