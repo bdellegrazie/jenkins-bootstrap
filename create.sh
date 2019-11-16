@@ -22,7 +22,7 @@ JAVA_OPTS="-Djava.util.logging.config.file=/var/jenkins_home/log.properties -Dje
 JENKINS_OPTS=--httpPort=8081
 
 # Run
-docker run \
+docker create \
   -p 8081:8081 \
   -p 50001:50001 \
   -u ${_UID}:${_GID} \
