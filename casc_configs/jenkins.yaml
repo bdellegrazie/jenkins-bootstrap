@@ -82,7 +82,7 @@ unclassified:
     durabilityHint: PERFORMANCE_OPTIMIZED
   location:
     adminAddress: brett.dellegrazie@gmail.com
-    url: "http://localhost:8081/"
+    url: "${JENKINS_PUBLIC_URL:-http://localhost:8081/}"
   timestamperConfig:
     allPipelines: true
     systemTimeFormat: "yyyy-MM-dd HH:mm:ss.SSS' | '"
