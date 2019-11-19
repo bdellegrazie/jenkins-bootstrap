@@ -1,0 +1,45 @@
+---
+jenkins:
+  authorizationStrategy:
+    roleBased:
+      roles:
+        global:
+          - assignments:
+              - "brett.dellegrazie@gmail.com"
+            name: "admin"
+            pattern: ".*"
+            permissions:
+              - "Job/Move"
+              - "Job/Build"
+              - "Lockable Resources/View"
+              - "Credentials/Delete"
+              - "Credentials/ManageDomains"
+              - "Lockable Resources/Unlock"
+              - "View/Create"
+              - "Agent/Configure"
+              - "Job/Read"
+              - "Credentials/Update"
+              - "Agent/Create"
+              - "Job/Delete"
+              - "Agent/Build"
+              - "View/Configure"
+              - "Lockable Resources/Reserve"
+              - "Agent/Provision"
+              - "SCM/Tag"
+              - "Job/Create"
+              - "Job/Discover"
+              - "Credentials/View"
+              - "Agent/Connect"
+              - "Agent/Delete"
+              - "Run/Replay"
+              - "Agent/Disconnect"
+              - "Run/Delete"
+              - "Job/Cancel"
+              - "Overall/Read"
+              - "Run/Update"
+              - "Credentials/Create"
+              - "Overall/Administer"
+              - "View/Delete"
+              - "Job/Configure"
+              - "Job/Workspace"
+              - "View/Read"

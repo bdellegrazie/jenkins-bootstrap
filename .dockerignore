@@ -1,11 +1,9 @@
 .git/
 .gitsecret/
-.venv/
+auth0/
 home/
 *.sh
 .envrc
 .pre-commit-config.yaml
 .yamllint
-Pipfile
-Pipfile.lock
 README.md

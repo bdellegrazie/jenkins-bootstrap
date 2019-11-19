@@ -1,6 +1,0 @@
----
-region: eu
-tunnels:
-  jenkins:
-    proto: http
-    addr: 8081

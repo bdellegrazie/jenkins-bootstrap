@@ -4,11 +4,8 @@ configuration-as-code:
 
 jenkins:
   agentProtocols:
-    - JNLP4-Connect
-    - Ping
-  authorizationStrategy:
-    loggedInUsersCanDoAnything:
-      allowAnonymousRead: false
+    - "JNLP4-connect"
+    - "Ping"
   clouds:
     - docker:
         name: "docker"
@@ -42,24 +39,23 @@ jenkins:
     standard:
       excludeClientIPFromCrumb: true
   disableRememberMe: true
-  markupFormatter: plainText
+  markupFormatter:
+    rawHtml:
+      disableSyntaxHighlighting: false
   mode: NORMAL
   numExecutors: 2
   remotingSecurity:
     enabled: true
-  securityRealm:
-    local:
-      allowsSignup: false
-      users:
-        - id: "admin"
-          password: "admin"
   slaveAgentPort: 50000
   systemMessage: "Jenkins configured automatically by Jenkins Configuration as Code Plugin\n\n"
 
 security:
   sSHD:
     port: -1
-
+  queueItemAuthenticator:
+    authenticators:
+      - global:
+          strategy: "anonymousAuthorizationStrategy"
 credentials:
   system:
     domainCredentials:
@@ -81,7 +77,7 @@ unclassified:
   globalDefaultFlowDurabilityLevel:
     durabilityHint: PERFORMANCE_OPTIMIZED
   location:
-    adminAddress: brett.dellegrazie@gmail.com
+    adminAddress: brett.dellegrazie+jenkins@gmail.com
     url: "${JENKINS_PUBLIC_URL:-http://localhost:8081/}"
   timestamperConfig:
     allPipelines: true

@@ -7,9 +7,6 @@
 .project
 .pydevproject
 
-# Python
-/.venv/
-
 # OS X
 .DS_Store
 
