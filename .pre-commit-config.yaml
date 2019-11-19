@@ -25,4 +25,3 @@ repos:
         args:
           - '--baseline'
           - '.secrets.baseline'
-        exclude: package-lock\.json|Pipfile\.lock|.*/tests/.*

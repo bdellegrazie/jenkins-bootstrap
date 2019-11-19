@@ -21,3 +21,4 @@
 # git-secret
 /.gitsecret/keys/random_seed
 !*.encrypted
+auth0/Jenkins-Local.secret
