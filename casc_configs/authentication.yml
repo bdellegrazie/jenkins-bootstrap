@@ -5,10 +5,11 @@ jenkins:
       binding: "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
       displayNameAttributeName: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
       emailAttributeName: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
-      groupsAttributeName: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/groups"
+      groupsAttributeName: "http://schemas.xmlsoap.org/claims/Group"
       idpMetadataConfiguration:
         period: 60  # minutes
         url: "${AUTH0_IDP_METADATA_URL}"
+      logoutUrl: "${AUTH0_IDP_LOGOUT_URL}"
       maximumAuthenticationLifetime: 86400
       usernameAttributeName: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn"
       usernameCaseConversion: "none"

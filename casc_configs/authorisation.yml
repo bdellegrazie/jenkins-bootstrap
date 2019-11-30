@@ -5,7 +5,7 @@ jenkins:
       roles:
         global:
           - assignments:
-              - "brett.dellegrazie@gmail.com"
+              - "group-jenkins-admin"
             name: "admin"
             pattern: ".*"
             permissions:
