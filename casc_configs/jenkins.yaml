@@ -39,6 +39,11 @@ jenkins:
     standard:
       excludeClientIPFromCrumb: true
   disableRememberMe: true
+  globalNodeProperties:
+    - envVars:
+        env:
+          - key: "CI"
+            value: "jenkins"
   markupFormatter:
     rawHtml:
       disableSyntaxHighlighting: false
@@ -50,12 +55,21 @@ jenkins:
   systemMessage: "Jenkins configured automatically by Jenkins Configuration as Code Plugin\n\n"
 
 security:
-  sSHD:
-    port: -1
+  apiToken:
+    creationOfLegacyTokenEnabled: false
+    tokenGenerationOnCreationEnabled: false
+    usageStatisticsEnabled: true
+  downloadSettings:
+    useBrowser: false
+  globalJobDslSecurityConfiguration:
+    useScriptSecurity: true
   queueItemAuthenticator:
     authenticators:
       - global:
           strategy: "anonymousAuthorizationStrategy"
+  sSHD:
+    port: -1
+
 credentials:
   system:
     domainCredentials:
