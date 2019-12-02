@@ -109,7 +109,7 @@ curl --silent --fail --max-time 10 --output /dev/null --request PATCH \
     }
   },
   "allowed_logout_urls": [
-    "https://github.com/bdellegrazie/jenkins-bootstrap"
+    "${AUTH0_IDP_LOGOUT_REDIRECT_URL}"
   ],
   "callbacks":[
     "${JENKINS_SAML_CALLBACK_URL}"
