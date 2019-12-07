@@ -56,7 +56,7 @@ fi
 JENKINS_PUBLIC_URL="${JENKINS_PUBLIC_URL%\"}"
 JENKINS_PUBLIC_URL="${JENKINS_PUBLIC_URL#\"}"
 JENKINS_SAML_CALLBACK_URL="${JENKINS_PUBLIC_URL}/securityRealm/finishLogin"
-JENKINS_LOGIN_URL="${JENKINS_PUBLIC_URL}/login"
+JENKINS_LOGIN_URL="${JENKINS_PUBLIC_URL}"
 JENKINS_LOGOUT_URL="${JENKINS_PUBLIC_URL}/logout"
 echo "Jenkins PL: $JENKINS_PUBLIC_URL"
 
@@ -69,12 +69,12 @@ AUTH0_BASE_URL="https://${AUTH0_TENANT}.${AUTH0_DOMAIN}"
 AUTH0_MGMT_OAUTH="${AUTH0_BASE_URL}/oauth/token"
 AUTH0_MGMT_API="${AUTH0_BASE_URL}/api/v2"
 # Calculate Jenkins IdP Metadata URL
-AUTH0_IDP_METADATA_URL="${AUTH0_BASE_URL}/samlp/metadata/${AUTH0_JENKINS_CLIENT_ID}"
-AUTH0_IDP_LOGOUT_REDIRECT_URL="https://github.com/bdellegrazie/jenkins-bootstrap"
-AUTH0_IDP_LOGOUT_URL="${AUTH0_BASE_URL}/v2/logout?client_id=${AUTH0_JENKINS_CLIENT_ID}&returnTo=$(urlencode ${AUTH0_IDP_LOGOUT_REDIRECT_URL})"
+AUTH0_SAML_METADATA_URL="${AUTH0_BASE_URL}/samlp/metadata/${AUTH0_JENKINS_CLIENT_ID}"
+AUTH0_SAML_LOGOUT_REDIRECT_URL="https://github.com/bdellegrazie/jenkins-bootstrap"
+AUTH0_SAML_LOGOUT_URL="${AUTH0_BASE_URL}/v2/logout?client_id=${AUTH0_JENKINS_CLIENT_ID}&returnTo=$(urlencode ${AUTH0_SAML_LOGOUT_REDIRECT_URL})"
 
-echo "IdP Metadata URL: $AUTH0_IDP_METADATA_URL"
-echo "IdP Logout URL: $AUTH0_IDP_LOGOUT_URL"
+echo "SAML Metadata URL: $AUTH0_SAML_METADATA_URL"
+echo "SAML Logout URL: $AUTH0_SAML_LOGOUT_URL"
 
 # Get Mgmt API Token
 AUTH0_MGMT_API_TOKEN=$(curl --silent --fail --max-time 10 --request POST \
@@ -103,13 +103,14 @@ curl --silent --fail --max-time 10 --output /dev/null --request PATCH \
 {
   "addons": {
     "samlp": {
+      "audience": "${JENKINS_SAML_CALLBACK_URL}",
       "logout": {
         "callback": "${JENKINS_LOGOUT_URL}"
       }
     }
   },
   "allowed_logout_urls": [
-    "${AUTH0_IDP_LOGOUT_REDIRECT_URL}"
+    "${AUTH0_SAML_LOGOUT_REDIRECT_URL}"
   ],
   "callbacks":[
     "${JENKINS_SAML_CALLBACK_URL}"
@@ -121,14 +122,16 @@ EOF
 
 echo "Auth0 Jenkins-Local updated successfully!"
 
-export JENKINS_PUBLIC_URL JENKINS_LOGOUT_URL AUTH0_IDP_METADATA_URL AUTH0_IDP_LOGOUT_URL
-
 # Logging
 mkdir -p ${script_dir}/home
-cat > ${script_dir}/home/log.properties <<EOF
+cat > ${script_dir}/home/logging.properties <<EOF
 handlers=java.util.logging.ConsoleHandler
 jenkins.level=INFO
-java.util.logging.ConsoleHandler.level=INFO
+#java.util.logging.ConsoleHandler.level=INFO
+# Uncomment to debug SAML
+java.util.logging.ConsoleHandler.level=FINEST
+org.jenkinsci.plugins.saml.level=FINEST
+org.pac4j.level=FINE
 EOF
 
 # Pre-generate ssh known_host keys
@@ -138,7 +141,7 @@ ssh-keyscan -H github.com > ${script_dir}/home/.ssh/known_hosts 2> /dev/null
 chmod 0600 ${script_dir}/home/.ssh/known_hosts
 
 # Options
-JAVA_OPTS="-Djava.util.logging.config.file=/var/jenkins_home/log.properties -Djenkins.install.runSetupWizard=false"
+JAVA_OPTS="-Djava.util.logging.config.file=/var/jenkins_home/logging.properties -Djenkins.install.runSetupWizard=false"
 JENKINS_OPTS=--httpPort=8081
 
 # Run
@@ -161,7 +164,7 @@ docker run \
   -e JENKINS_LOGIN_URL="${JENKINS_LOGIN_URL}" \
   -e JENKINS_LOGOUT_URL="${JENKINS_LOGOUT_URL}" \
   -e JENKINS_SAML_CALLBACK_URL="${JENKINS_SAML_CALLBACK_URL}" \
-  -e AUTH0_IDP_METADATA_URL="${AUTH0_IDP_METADATA_URL}" \
-  -e AUTH0_IDP_LOGOUT_URL="${AUTH0_IDP_LOGOUT_URL}" \
+  -e AUTH0_SAML_METADATA_URL="${AUTH0_SAML_METADATA_URL}" \
+  -e AUTH0_SAML_LOGOUT_URL="${AUTH0_SAML_LOGOUT_URL}" \
   --name jenkins-bdg \
   bdg/jenkins:latest

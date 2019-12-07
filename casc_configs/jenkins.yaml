@@ -59,8 +59,6 @@ security:
     creationOfLegacyTokenEnabled: false
     tokenGenerationOnCreationEnabled: false
     usageStatisticsEnabled: true
-  downloadSettings:
-    useBrowser: false
   globalJobDslSecurityConfiguration:
     useScriptSecurity: true
   queueItemAuthenticator:
@@ -92,7 +90,7 @@ unclassified:
     durabilityHint: PERFORMANCE_OPTIMIZED
   location:
     adminAddress: brett.dellegrazie+jenkins@gmail.com
-    url: "${JENKINS_PUBLIC_URL:-http://localhost:8081/}"
+    url: "${JENKINS_PUBLIC_URL}"
   timestamperConfig:
     allPipelines: true
     systemTimeFormat: "yyyy-MM-dd HH:mm:ss.SSS' | '"
