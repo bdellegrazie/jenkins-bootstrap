@@ -19,21 +19,10 @@ ENV JENKINS_SAML_METADATA_REFRESH_MIN=${JENKINS_SAML_METADATA_REFRESH_MIN}
 ARG JENKINS_SAML_SESSION_LIFETIME_SEC=36000
 ENV JENKINS_SAML_SESSION_LIFETIME_SEC=${JENKINS_SAML_SESSION_LIFETIME_SEC}
 
-# Auth0 Tenant (default is mine)
-ARG AUTH0_TENANT_URL=https://dev-bdellegrazie.eu.auth0.com
-ENV AUTH0_TENANT_URL=${AUTH0_TENANT_URL}
-
-# Auth0 Jenkins Client Application ID (default is mine)
-ARG AUTH0_JENKINS_CLIENT_ID=f4NPjI7TQwpbS4nPJ0ST4CRXZnWCero5
-ENV AUTH0_JENKINS_CLIENT_ID=${AUTH0_JENKINS_CLIENT_ID}
-
-# Logout URL, url-encoded
-ARG LOGOUT_URL_ENCODED=https%3A%2F%2Fgithub.com%2Fbdellegrazie%2Fjenkins-bootstrap
-ENV LOGOUT_URL_ENCODED=${LOGOUT_URL_ENCODED}
-
-# Calculated values
 # Auth0 Application Metadata URL
-ENV AUTH0_SAML_METADATA_URL=${AUTH0_TENANT_URL}/samlp/metadata/${AUTH0_JENKINS_CLIENT_ID}
+ARG AUTH0_SAML_METADATA_URL=https://dev-bdellegrazie.eu.auth0.com/samlp/metadata/f4NPjI7TQwpbS4nPJ0ST4CRXZnWCero5
+ENV AUTH0_SAML_METADATA_URL=${AUTH0_SAML_METADATA_URL}
 
 # Full Logout URL (add '&federated' to logout of IdP as well)
-ENV AUTH0_SAML_LOGOUT_URL=${AUTH0_TENANT_URL}/v2/logout?client_id=${AUTH0_JENKINS_CLIENT_ID}&returnTo=${LOGOUT_URL_ENCODED}
+ARG AUTH0_SAML_LOGOUT_URL=https://dev-bdellegrazie.eu.auth0.com/v2/logout?client_id=f4NPjI7TQwpbS4nPJ0ST4CRXZnWCero5&returnTo=https%3A%2F%2Fgithub.com%2Fbdellegrazie%2Fjenkins-bootstrap
+ENV AUTH0_SAML_LOGOUT_URL=${AUTH0_SAML_LOGOUT_URL}

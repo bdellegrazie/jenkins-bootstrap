@@ -7,3 +7,4 @@ home/
 .pre-commit-config.yaml
 .yamllint
 README.md
+.env
