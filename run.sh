@@ -14,11 +14,11 @@ mkdir -p ${script_dir}/home
 cat > ${script_dir}/home/logging.properties <<EOF
 handlers=java.util.logging.ConsoleHandler
 jenkins.level=INFO
-#java.util.logging.ConsoleHandler.level=INFO
+java.util.logging.ConsoleHandler.level=INFO
 # Uncomment to debug SAML
-java.util.logging.ConsoleHandler.level=FINEST
-org.jenkinsci.plugins.saml.level=FINEST
-org.pac4j.level=FINE
+#java.util.logging.ConsoleHandler.level=FINEST
+#org.jenkinsci.plugins.saml.level=FINEST
+#org.pac4j.level=FINE
 EOF
 
 # Pre-generate ssh known_host keys
