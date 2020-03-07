@@ -15,6 +15,7 @@
 /jenkins-bootstrap-deploy.*
 /.direnv/
 /.env
+*.jar
 
 # git-secret
 /.gitsecret/keys/random_seed
