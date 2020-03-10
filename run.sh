@@ -17,10 +17,13 @@ chmod 0600 ${script_dir}/home/.ssh/known_hosts
 
 # Options
 # Note logging.properties needs to be on the endorsed path or its not picked up
-JAVA_OPTS="-Djava.endorsed.dirs=/var/jenkins_home/lib -Djava.util.logging.config.file=/var/jenkins_home/lib/logging.properties -Djenkins.install.runSetupWizard=false"
-JENKINS_OPTS=--httpPort=8081
+JAVA_OPTS="-Djava.util.logging.config.file=/var/jenkins_home/logging.properties\
+ -Djenkins.install.runSetupWizard=false"
+JENKINS_OPTS="--httpPort=8081"
 
 source ${script_dir}/.env
+
+cp -f logging.properties ${script_dir}/home/
 
 # Run
 docker run \
@@ -32,7 +35,6 @@ docker run \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v ${script_dir}/home:/var/jenkins_home \
   -v ${script_dir}/casc_configs:/var/jenkins_home/casc_configs \
-  -v ${script_dir}/lib:/var/jenkins_home/lib \
   -e BOOTSTRAP_GIT_REPO="https://github.com/bdellegrazie/jenkins-bootstrap.git" \
   -e BOOTSTRAP_SSH_DEPLOY_KEY="$(cat ~/.ssh/jenkins-bootstrap-deploy.key)" \
   -e TRY_UPGRADE_IF_NO_MARKER=true \
