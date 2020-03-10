@@ -1,6 +1,8 @@
 .git/
 .gitsecret/
 auth0/
+casc_configs/
+lib/
 home/
 *.sh
 .envrc

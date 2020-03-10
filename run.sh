@@ -9,18 +9,6 @@ _GID_DOCKER=$(getent group docker | awk -F: '{print $3}')
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-# Logging
-mkdir -p ${script_dir}/home
-cat > ${script_dir}/home/logging.properties <<EOF
-handlers=java.util.logging.ConsoleHandler
-jenkins.level=INFO
-java.util.logging.ConsoleHandler.level=INFO
-# Uncomment to debug SAML
-#java.util.logging.ConsoleHandler.level=FINEST
-#org.jenkinsci.plugins.saml.level=FINEST
-#org.pac4j.level=FINE
-EOF
-
 # Pre-generate ssh known_host keys
 mkdir -p ${script_dir}/home/.ssh
 chmod 0700 ${script_dir}/home/.ssh
@@ -28,7 +16,8 @@ ssh-keyscan -H github.com > ${script_dir}/home/.ssh/known_hosts 2> /dev/null
 chmod 0600 ${script_dir}/home/.ssh/known_hosts
 
 # Options
-JAVA_OPTS="-Djava.util.logging.config.file=/var/jenkins_home/logging.properties -Djenkins.install.runSetupWizard=false"
+# Note logging.properties needs to be on the endorsed path or its not picked up
+JAVA_OPTS="-Djava.endorsed.dirs=/var/jenkins_home/lib -Djava.util.logging.config.file=/var/jenkins_home/lib/logging.properties -Djenkins.install.runSetupWizard=false"
 JENKINS_OPTS=--httpPort=8081
 
 source ${script_dir}/.env
@@ -43,6 +32,7 @@ docker run \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v ${script_dir}/home:/var/jenkins_home \
   -v ${script_dir}/casc_configs:/var/jenkins_home/casc_configs \
+  -v ${script_dir}/lib:/var/jenkins_home/lib \
   -e BOOTSTRAP_GIT_REPO="https://github.com/bdellegrazie/jenkins-bootstrap.git" \
   -e BOOTSTRAP_SSH_DEPLOY_KEY="$(cat ~/.ssh/jenkins-bootstrap-deploy.key)" \
   -e TRY_UPGRADE_IF_NO_MARKER=true \
