@@ -40,6 +40,9 @@ jenkins:
       excludeClientIPFromCrumb: true
   disableRememberMe: true
   globalNodeProperties:
+    - platformLabeler:
+        labelConfig:
+          version: false
     - envVars:
         env:
           - key: "CI"
@@ -83,6 +86,14 @@ credentials:
                   privateKey: ${BOOTSTRAP_SSH_DEPLOY_KEY}
 
 unclassified:
+  defaultFolderConfiguration:
+    healthMetrics:
+      - worstChildHealthMetric:
+          recursive: true
+  gitHubConfiguration:
+    apiRateLimitChecker: ThrottleForNormalize
+  gitHubPluginConfig:
+    hookUrl: "${JENKINS_PUBLIC_URL}/github-webhook/"
   gitSCM:
     globalConfigEmail: "brett.dellegrazie+jenkins@gmail.com"
     globalConfigName: "Jenkins CI"
@@ -91,6 +102,22 @@ unclassified:
   location:
     adminAddress: brett.dellegrazie+jenkins@gmail.com
     url: "${JENKINS_PUBLIC_URL}"
+  platformLabelerGlobalConfiguration:
+    labelConfig:
+      version: false
+  prometheusConfiguration:
+    collectingMetricsPeriodInSeconds: 120
+    countAbortedBuilds: true
+    countFailedBuilds: true
+    countNotBuiltBuilds: true
+    countSuccessfulBuilds: true
+    countUnstableBuilds: true
+    defaultNamespace: "default"
+    fetchTestResults: true
+    jobAttributeName: "jenkins_job"
+    path: "prometheus"
+    processingDisabledBuilds: false
+    useAuthenticatedEndpoint: false
   timestamperConfig:
     allPipelines: true
     systemTimeFormat: "yyyy-MM-dd HH:mm:ss.SSS' | '"

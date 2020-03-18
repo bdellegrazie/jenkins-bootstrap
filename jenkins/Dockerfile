@@ -1,11 +1,23 @@
 # https://github.com/jenkinsci/docker/blob/master/Dockerfile-alpine
-FROM jenkins/jenkins:lts-alpine
+FROM jenkins/jenkins:lts-alpine as base
 
 ARG BUILD_VERSION=0
 LABEL name="bdellegrazie/jenkins" vendor="brett.dellegrazie@gmail.com" version="${JENKINS_VERSION}-${BUILD_VERSION}"
 COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 RUN echo 2.0 > /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state
+
+FROM base as jenkins
+
+USER root
+ARG user=jenkins
+ARG DOCKER_GROUP_NAME=docker
+ARG DOCKER_GROUP_GID=998
+RUN addgroup -g ${DOCKER_GROUP_GID} -S ${DOCKER_GROUP_NAME} \
+  && addgroup ${user} ${DOCKER_GROUP_NAME}
+USER ${user}
+
+COPY logging.properties /usr/share/jenkins/ref/
 
 # Public URL without a trailing slash
 ARG JENKINS_PUBLIC_URL=http://localhost:8080

@@ -27,7 +27,7 @@ Useful for testing automation processes and linting pipelines
     actually logout. Can add a federated parameter too if you want the IdP to be completely logged out.
 
 ## Ngrok integration
-* Default HTTP port: 8081
+* Default HTTP port: 8080
 * Default JNLP port: 50000
 * Default SSH port: -1 (disabled)
 
@@ -40,3 +40,13 @@ dependencies.
 
 [Using CasC Plugin](https://github.com/jenkinsci/configuration-as-code-plugin)
 [Using Groovy](https://github.com/edx/jenkins-configuration)
+
+# Usage
+
+Run in order:
+
+1. setup-ngrok.sh
+2. setup-auth0.sh
+3. setup-auth0-authz.sh (incomplete)
+4. setup-jenkins.sh
+5. docker-compose up

@@ -24,6 +24,7 @@ junit
 pipeline-model-definition
 plain-credentials
 platformlabeler
+prometheus
 role-strategy
 saml
 timestamper

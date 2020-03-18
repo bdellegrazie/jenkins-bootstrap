@@ -36,7 +36,7 @@ if [[ $TUNNEL_RC -ne 0 ]]; then
 {
   "name": "${NGROK_TUNNEL}",
   "proto": "http",
-  "addr": "8081"
+  "addr": "8080"
 }
 EOF
 )

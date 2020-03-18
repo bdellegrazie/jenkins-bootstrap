@@ -1,0 +1,96 @@
+version: '3.7'
+
+services:
+  jenkins:
+    image: 'bdg/jenkins:latest'
+    build:
+      context: './jenkins/'
+      args:
+        - 'AUTH0_SAML_METADATA_URL'
+        - 'AUTH0_SAML_LOGOUT_URL'
+        - 'DOCKER_GROUP_GID'
+        - 'JENKINS_PUBLIC_URL'
+      cache_from:
+        - 'jenkins/jenkins:lts-alpine'
+    container_name: 'jenkins'
+    environment:
+      - 'AUTH0_SAML_METADATA_URL'
+      - 'AUTH0_SAML_LOGOUT_URL'
+      - 'CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/'  # pragma: allowlist secret
+      - 'JENKINS_PUBLIC_URL'
+      - 'JAVA_OPTS'
+      - 'JENKINS_OPTS'
+      - 'TRY_UPGRADE_IF_NO_MARKER=true'
+    networks:
+      - 'jenkins'
+    ports:
+      - '8080:8080'
+      - '50000:50000'
+    volumes:
+      - 'jenkins-data:/var/jenkins_home'
+      - './jenkins/casc_configs:/var/jenkins_home/casc_configs:ro'
+      - '/var/run/docker.sock:/var/run/docker.sock:rw'
+
+  prometheus:
+    image: 'prom/prometheus:v2.16.0'
+    container_name: 'prometheus'
+    networks:
+      - 'jenkins'
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.listen-address=0.0.0.0:9090'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    volumes:
+      - 'prometheus-data:/prometheus'
+      - './prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro'
+    ports:
+      - '9090:9090'
+    healthcheck:
+      test: 'wget -q --spider http://127.0.0.1:9090/-/ready || exit 1'
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  grafana:
+    image: 'grafana/grafana:6.6.2'
+    container_name: 'grafana'
+    networks:
+      - 'jenkins'
+    volumes:
+      - 'grafana-data:/var/lib/grafana'
+      - './grafana/provisioning:/etc/grafana/provisioning:ro'
+    environment:
+      GF_SERVER_HTTP_PORT: '3000'
+      GF_LOG_MODE: 'console'
+      GF_LOG_LEVEL: 'info'
+      GF_ANALYTICS_REPORTING_ENABLED: 'false'
+      GF_ANALYTICS_CHECK_FOR_UPDATES: 'false'
+      # Disable all login prompts and security features
+      # !!! THIS IS ONLY SUITABLE FOR LOCAL TESTING !!!
+      GF_SECURITY_DISABLE_GRAVATAR: 'true'
+      GF_AUTH_DISABLE_LOGIN_FORM: 'true'
+      GF_AUTH_DISABLE_SIGNOUT_MENU: 'true'
+      GF_AUTH_ANONYMOUS_ENABLED: 'true'
+      GF_AUTH_ANONYMOUS_ORG_ROLE: 'Admin'
+      GF_AUTH_BASIC_ENABLED: 'true'
+      GF_USERS_ALLOW_SIGN_UP: 'false'
+    ports:
+      - '3000:3000'
+    healthcheck:
+      test: 'wget -q --spider http://127.0.0.1:3000/api/health || exit 1'
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  grafana-data:
+  jenkins-data:
+  prometheus-data:
+
+networks:
+  jenkins:
