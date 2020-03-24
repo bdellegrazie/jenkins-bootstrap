@@ -1,5 +1,8 @@
 version: '3.7'
 
+networks:
+  jenkins:
+
 services:
   jenkins:
     image: 'bdg/jenkins:latest'
@@ -31,6 +34,26 @@ services:
       - './jenkins/casc_configs:/var/jenkins_home/casc_configs:ro'
       - '/var/run/docker.sock:/var/run/docker.sock:rw'
 
+  nexus:
+    image: 'sonatype/nexus3:latest'
+    container_name: 'nexus'
+    user: 'nexus'
+    environment:
+      NEXUS_SECURITY_RANDOMPASSWORD: 'false'
+    networks:
+      - 'jenkins'
+    ports:
+      - '8081:8081'
+      - '18090:18090'
+      - '18091:18091'
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - 'nexus-data:/nexus-data'
+      - './nexus/etc/nexus.properties:/nexus-data/etc/nexus.properties:rw'
+
   prometheus:
     image: 'prom/prometheus:v2.16.0'
     container_name: 'prometheus'
@@ -43,6 +66,8 @@ services:
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
       - '--web.enable-lifecycle'
+    secrets:
+      - nexus_admin
     volumes:
       - 'prometheus-data:/prometheus'
       - './prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro'
@@ -87,10 +112,12 @@ services:
       retries: 3
       start_period: 10s
 
+secrets:
+  nexus_admin:
+    file: './nexus/admin.secret'
+
 volumes:
   grafana-data:
   jenkins-data:
+  nexus-data:
   prometheus-data:
-
-networks:
-  jenkins:

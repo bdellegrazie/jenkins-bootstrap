@@ -12,7 +12,7 @@
       }
     ]
   },
-  "description": "Nexus Dashboard for ocadotechnology/nexus-exporter",
+  "description": "Nexus Dashboard",
   "editable": true,
   "gnetId": 11702,
   "graphTooltip": 0,
@@ -60,7 +60,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(nexus_events_total[5m])",
+          "expr": "rate(org_eclipse_jetty_webapp_WebAppContext_dispatches[5m])",
           "legendFormat": "{{level}}",
           "refId": "A"
         }
@@ -147,7 +147,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "nexus_threads_used",
+          "expr": "jvm_thread_states_daemon_count",
           "legendFormat": "threads",
           "refId": "A"
         }
@@ -234,7 +234,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(nexus_webapp_http_response_total[5m])",
+          "expr": "rate(org_eclipse_jetty_webapp_WebAppContext_responses[5m])",
           "legendFormat": "{{code}}",
           "refId": "A"
         }
@@ -321,7 +321,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(nexus_webapp_http_request_total[5m])",
+          "expr": "rate(org_eclipse_jetty_webapp_WebAppContext_requests[5m])",
           "legendFormat": "{{method}}",
           "refId": "A"
         }
@@ -408,12 +408,12 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "nexus_jvm_memory_heap_max_bytes",
+          "expr": "jvm_memory_heap_max",
           "legendFormat": "max",
           "refId": "A"
         },
         {
-          "expr": "nexus_jvm_memory_heap_used_bytes",
+          "expr": "jvm_memory_heap_used",
           "legendFormat": "used",
           "refId": "B"
         }
@@ -500,12 +500,12 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "nexus_jvm_memory_total_max_bytes",
+          "expr": "jvm_memory_total_max",
           "legendFormat": "max",
           "refId": "A"
         },
         {
-          "expr": "nexus_jvm_memory_total_used_bytes",
+          "expr": "jvm_memory_total_used",
           "legendFormat": "used",
           "refId": "B"
         }
@@ -592,12 +592,12 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "nexus_max_memory_bytes - nexus_free_memory_bytes",
+          "expr": "jvm_memory_pools_Metaspace_used",
           "legendFormat": "used",
           "refId": "A"
         },
         {
-          "expr": "nexus_max_memory_bytes",
+          "expr": "jvm_memory_pools_Metaspace_max",
           "legendFormat": "max",
           "refId": "B"
         }
@@ -606,7 +606,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "memory",
+      "title": "jvm memory metaspace",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -650,7 +650,25 @@
     "nexus"
   ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {
+          "text": "Prometheus",
+          "value": "Prometheus"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "datasource",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      }
+    ]
   },
   "time": {
     "from": "now-30m",

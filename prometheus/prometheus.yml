@@ -19,3 +19,11 @@ scrape_configs:
     metrics_path: '/prometheus'
     static_configs:
       - targets: ['jenkins:8080']
+
+  - job_name: 'nexus'
+    metrics_path: '/service/metrics/prometheus'
+    basic_auth:
+      username: 'admin'
+      password_file: '/run/secrets/nexus_admin'
+    static_configs:
+      - targets: ['nexus:8081']

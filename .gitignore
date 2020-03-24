@@ -15,9 +15,9 @@
 
 /jenkins-bootstrap-deploy.*
 
+/.env
+
 # git-secret
 /.gitsecret/keys/random_seed
+*.secret
 !*.encrypted
-auth0/Jenkins-Local.secret
-
-/.env
