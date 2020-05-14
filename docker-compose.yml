@@ -55,7 +55,7 @@ services:
       - './nexus/etc/nexus.properties:/nexus-data/etc/nexus.properties:rw'
 
   prometheus:
-    image: 'prom/prometheus:v2.16.0'
+    image: 'prom/prometheus:v2.18.1'
     container_name: 'prometheus'
     networks:
       - 'jenkins'
@@ -81,7 +81,7 @@ services:
       start_period: 10s
 
   grafana:
-    image: 'grafana/grafana:6.7.1'
+    image: 'grafana/grafana:6.7.3'
     container_name: 'grafana'
     networks:
       - 'jenkins'

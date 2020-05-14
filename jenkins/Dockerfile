@@ -1,5 +1,5 @@
-# https://github.com/jenkinsci/docker/blob/master/Dockerfile-alpine
-FROM jenkins/jenkins:lts-alpine as base
+# https://github.com/jenkinsci/docker/blob/master/Dockerfile-slim
+FROM jenkins/jenkins:lts-slim as base
 
 ARG BUILD_VERSION=0
 LABEL name="bdellegrazie/jenkins" vendor="brett.dellegrazie@gmail.com" version="${JENKINS_VERSION}-${BUILD_VERSION}"
@@ -13,11 +13,11 @@ USER root
 ARG user=jenkins
 ARG DOCKER_GROUP_NAME=docker
 ARG DOCKER_GROUP_GID=998
-RUN addgroup -g ${DOCKER_GROUP_GID} -S ${DOCKER_GROUP_NAME} \
+RUN addgroup --system --gid ${DOCKER_GROUP_GID} ${DOCKER_GROUP_NAME} \
   && addgroup ${user} ${DOCKER_GROUP_NAME}
 USER ${user}
 
-COPY logging.properties /usr/share/jenkins/ref/
+COPY logging.properties.override /usr/share/jenkins/ref/
 
 # Public URL without a trailing slash
 ARG JENKINS_PUBLIC_URL=http://localhost:8080
