@@ -5,10 +5,15 @@ global:
   # scrape_timeout is set to the global default (10s).
 
 scrape_configs:
-  - job_name: 'prometheus'
+  - job_name: 'alertmanager'
     metrics_path: '/metrics'
     static_configs:
-      - targets: ['prometheus:9090']
+      - targets: ['alertmanager:9093']
+
+  - job_name: 'cadvisor'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['cadvisor:8082']
 
   - job_name: 'grafana'
     metrics_path: '/metrics'
@@ -27,3 +32,20 @@ scrape_configs:
       password_file: '/run/secrets/nexus_admin'
     static_configs:
       - targets: ['nexus:8081']
+
+  - job_name: 'prometheus'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['prometheus:9090']
+
+  - job_name: 'renderer'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['renderer:8083']
+
+alerting:
+  alertmanagers:
+    - api_version: v2
+      static_configs:
+        - targets:
+            - 'alertmanager:9093'

@@ -1,0 +1,15 @@
+---
+global: {}
+
+templates:
+  - /etc/alertmanager/templates/*.tmpl
+
+route:
+  receiver: 'null'
+  routes: []
+
+receivers:
+  # Blackhole reciever
+  - name: 'null'
+
+inhibit_rules: []
