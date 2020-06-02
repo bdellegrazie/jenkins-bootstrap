@@ -101,6 +101,9 @@ services:
         - 'JENKINS_PUBLIC_URL'
       cache_from:
         - 'jenkins/jenkins:lts-alpine'
+        - 'base'
+        - 'jenkins'
+        - 'bdg/jenkins:latest'
     container_name: 'jenkins'
     environment:
       - 'AUTH0_SAML_METADATA_URL'
@@ -118,6 +121,7 @@ services:
     volumes:
       - 'jenkins-data:/var/jenkins_home'
       - './jenkins/casc_configs:/var/jenkins_home/casc_configs:ro'
+      - './jenkins/builds:/builds'
       - '/var/run/docker.sock:/var/run/docker.sock:rw'
 
   nexus:
