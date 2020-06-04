@@ -6,17 +6,19 @@ global:
 
 scrape_configs:
   - job_name: 'alertmanager'
-    metrics_path: '/metrics'
     static_configs:
       - targets: ['alertmanager:9093']
 
   - job_name: 'cadvisor'
-    metrics_path: '/metrics'
     static_configs:
       - targets: ['cadvisor:8082']
 
-  - job_name: 'grafana'
+  - job_name: 'docker'
     metrics_path: '/metrics'
+    static_configs:
+      - targets: ['host.docker.internal:9323']
+
+  - job_name: 'grafana'
     static_configs:
       - targets: ['grafana:3000']
 
@@ -34,12 +36,10 @@ scrape_configs:
       - targets: ['nexus:8081']
 
   - job_name: 'prometheus'
-    metrics_path: '/metrics'
     static_configs:
       - targets: ['prometheus:9090']
 
   - job_name: 'renderer'
-    metrics_path: '/metrics'
     static_configs:
       - targets: ['renderer:8083']
 

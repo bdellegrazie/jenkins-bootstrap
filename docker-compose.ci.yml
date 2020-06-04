@@ -1,0 +1,61 @@
+---
+version: '3.7'
+
+services:
+  jenkins:
+    image: 'bdg/jenkins:latest'
+    build:
+      context: './jenkins/'
+      args:
+        - 'AUTH0_SAML_METADATA_URL'
+        - 'AUTH0_SAML_LOGOUT_URL'
+        - 'DOCKER_GROUP_GID'
+        - 'JENKINS_PUBLIC_URL'
+      cache_from:
+        - 'jenkins/jenkins:lts-alpine'
+        - 'base'
+        - 'jenkins'
+        - 'bdg/jenkins:latest'
+    container_name: 'jenkins'
+    environment:
+      - 'AUTH0_SAML_METADATA_URL'
+      - 'AUTH0_SAML_LOGOUT_URL'
+      - 'CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/'  # pragma: allowlist secret
+      - 'JENKINS_PUBLIC_URL'
+      - 'JAVA_OPTS'
+      - 'JENKINS_OPTS'
+      - 'TRY_UPGRADE_IF_NO_MARKER=true'
+    ports:
+      - '8080:8080'
+      - '50000:50000'
+    volumes:
+      - 'jenkins-data:/var/jenkins_home'
+      - './jenkins/casc_configs:/var/jenkins_home/casc_configs:ro'
+      - './jenkins/builds:/builds'
+      - '/var/run/docker.sock:/var/run/docker.sock:rw'
+
+  nexus:
+    image: 'sonatype/nexus3:latest'
+    container_name: 'nexus'
+    user: 'nexus'
+    environment:
+      NEXUS_SECURITY_RANDOMPASSWORD: 'false'
+    ports:
+      - '8081:8081'
+      - '18090:18090'
+      - '18091:18091'
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - 'nexus-data:/nexus-data'
+      - './nexus/etc/nexus.properties:/nexus-data/etc/nexus.properties:rw'
+
+secrets:
+  nexus_admin:
+    file: './nexus/admin.secret'
+
+volumes:
+  jenkins-data:
+  nexus-data:
