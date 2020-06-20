@@ -46,6 +46,8 @@ jenkins:
     - envVars:
         env:
           - key: "CI"
+            value: "true"
+          - key: "CI_TYPE"
             value: "jenkins"
   markupFormatter:
     rawHtml:
