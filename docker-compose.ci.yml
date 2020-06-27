@@ -24,14 +24,17 @@ services:
       - 'JENKINS_PUBLIC_URL'
       - 'JAVA_OPTS'
       - 'JENKINS_OPTS'
+      - 'JENKINS_SLAVE_AGENT_PORT'
       - 'TRY_UPGRADE_IF_NO_MARKER=true'
     ports:
       - '8080:8080'
-      - '50000:50000'
+    secrets:
+      - 'bootstrap_ssh_deploy_key'
     volumes:
       - 'jenkins-data:/var/jenkins_home'
       - './jenkins/casc_configs:/var/jenkins_home/casc_configs:ro'
-      - './jenkins/builds:/builds'
+      - './jenkins/build:/build:rw'
+      - './jenkins/workspace:/workspace:rw'
       - '/var/run/docker.sock:/var/run/docker.sock:rw'
 
   nexus:
@@ -53,6 +56,8 @@ services:
       - './nexus/etc/nexus.properties:/nexus-data/etc/nexus.properties:rw'
 
 secrets:
+  bootstrap_ssh_deploy_key:
+    file: './secrets/jenkins-bootstrap-deploy.secret'
   nexus_admin:
     file: './nexus/admin.secret'
 

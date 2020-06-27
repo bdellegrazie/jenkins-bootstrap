@@ -2,8 +2,8 @@ ansible
 ansicolor
 antisamy-markup-formatter
 authorize-project
-aws-credentials
-aws-secrets-manager-credentials-provider
+#aws-credentials
+#aws-secrets-manager-credentials-provider
 blueocean
 cloudbees-folder
 config-file-provider

@@ -16,18 +16,7 @@ jenkins:
           - labelString: "docker-agent"
             name: docker
             dockerTemplateBase:
-              image: "jenkins/jnlp-slave"
-              volumes: ~
-              environmentsString: ~
-            remoteFs: "/home/jenkins/agent"
-            connector:
-              attach:
-                user: "jenkins"
-            instanceCapStr: "10"
-          - labelString: "docker-agent-node"
-            name: docker-node
-            dockerTemplateBase:
-              image: "jenkins/jnlp-slave-node"
+              image: "jenkins/inbound-agent"
               volumes: ~
               environmentsString: ~
             remoteFs: "/home/jenkins/agent"
@@ -56,7 +45,7 @@ jenkins:
   numExecutors: 2
   remotingSecurity:
     enabled: true
-  slaveAgentPort: 50000
+  slaveAgentPort: -1
   systemMessage: "Jenkins configured automatically by Jenkins Configuration as Code Plugin\n\n"
 
 security:
@@ -69,7 +58,7 @@ security:
   queueItemAuthenticator:
     authenticators:
       - global:
-          strategy: "anonymousAuthorizationStrategy"
+          strategy: "triggeringUsersAuthorizationStrategy"
   sSHD:
     port: -1
 
@@ -85,7 +74,7 @@ credentials:
               description: "Jenkins Bootstrap Deploy Key"
               privateKeySource:
                 directEntry:
-                  privateKey: ${BOOTSTRAP_SSH_DEPLOY_KEY}
+                  privateKey: ${bootstrap_ssh_deploy_key}
 
 unclassified:
   defaultFolderConfiguration:
