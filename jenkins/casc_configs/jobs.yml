@@ -10,8 +10,16 @@ jobs:
           gitParameter {
             name('revision')
             type('BRANCH_TAG')
-            sortMode('ASCENDING_SMART')
+            branch('master')
+            branchFilter('.*')
             defaultValue('origin/master')
+            description('Branch/Tag to build')
+            listSize("0")
+            quickFilterEnabled(true)
+            selectedValue('DEFAULT')
+            sortMode('ASCENDING_SMART')
+            tagFilter('v*')
+            useRepository('')
           }
         }
         scm {
