@@ -1,0 +1,82 @@
+---
+jobs:
+  - script: >
+      folder('Admin') {
+        description('Folder containing configuration and seed jobs')
+      }
+  - script: >
+      job('Admin/seed') {
+        parameters {
+          gitParameter {
+            name('revision')
+            type('BRANCH_TAG')
+            sortMode('ASCENDING_SMART')
+            defaultValue('origin/master')
+          }
+        }
+        scm {
+          git {
+            branch('master')
+            browser {
+              githubWeb {
+                repoUrl('https://github.com/bdellegrazie/jenkins-bootstrap/')
+              }
+            }
+            remote {
+              credentials('jenkins_bootstrap_deploy_key')
+              github('bdellegrazie/jenkins-bootstrap', 'ssh')
+              name('origin')
+            }
+            extensions {
+              cleanBeforeCheckout()
+              cleanAfterCheckout()
+              cloneOptions {
+                noTags(false)
+                shallow(false)
+              }
+              pathRestriction {
+                includedRegions('jenkins/jobsDSL/.*')
+                excludedRegions('')
+              }
+              pruneBranches()
+              sparseCheckoutPaths {
+                sparseCheckoutPaths {
+                  sparseCheckoutPath {
+                    path('jenkins/jobsDSL')
+                  }
+                }
+              }
+            }
+          }
+        }
+        label('master')
+        logRotator {
+          numToKeep(20)
+        }
+        properties {
+          disableConcurrentBuilds()
+          priority(0)
+        }
+        triggers {
+          githubPush()
+        }
+        wrappers {
+          colorizeOutput()
+        }
+        steps {
+          jobDsl {
+            failOnMissingPlugin(true)
+            failOnSeedCollision(true)
+            ignoreMissingFiles(true)
+            lookupStrategy('JENKINS_ROOT')
+            removedConfigFilesAction('DELETE')
+            removedJobAction('DISABLE')
+            removedViewAction('DELETE')
+            sandbox(true)
+            targets('jenkins/jobsDSL/**/*.groovy')
+            unstableOnDeprecation(true)
+          }
+        }
+      }
+  - script: >
+      queue('Admin/Seed')

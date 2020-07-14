@@ -48,7 +48,7 @@ services:
       start_period: 10s
 
   grafana:
-    image: 'grafana/grafana:7.0.4'
+    image: 'grafana/grafana:7.0.6'
     container_name: 'grafana'
     volumes:
       - 'grafana-data:/var/lib/grafana'
