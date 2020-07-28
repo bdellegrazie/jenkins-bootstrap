@@ -63,7 +63,6 @@ jobs:
         }
         properties {
           disableConcurrentBuilds()
-          priority(0)
         }
         triggers {
           githubPush()

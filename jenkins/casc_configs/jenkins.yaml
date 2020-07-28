@@ -109,7 +109,7 @@ unclassified:
     path: "prometheus"
     processingDisabledBuilds: false
     useAuthenticatedEndpoint: false
-  timestamperConfig:
+  timestamper:
     allPipelines: true
     systemTimeFormat: "yyyy-MM-dd HH:mm:ss.SSS' | '"
 tool:
