@@ -48,12 +48,13 @@ services:
       start_period: 10s
 
   grafana:
-    image: 'grafana/grafana:7.1.1'
+    image: 'grafana/grafana:7.1.5'
     container_name: 'grafana'
     volumes:
       - 'grafana-data:/var/lib/grafana'
       - './grafana/provisioning:/etc/grafana/provisioning:ro'
     environment:
+      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: 'camptocamp-prometheus-alertmanager-datasource'
       GF_INSTALL_PLUGINS: 'camptocamp-prometheus-alertmanager-datasource'
       GF_SERVER_HTTP_PORT: '3000'
       GF_LOG_MODE: 'console'
@@ -82,7 +83,7 @@ services:
       start_period: 10s
 
   prometheus:
-    image: 'prom/prometheus:v2.20.0'
+    image: 'prom/prometheus:v2.20.1'
     container_name: 'prometheus'
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
