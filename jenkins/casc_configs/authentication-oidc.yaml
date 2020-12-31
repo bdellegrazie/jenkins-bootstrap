@@ -1,0 +1,37 @@
+---
+jenkins:
+  securityRealm:
+    oic:
+      automanualconfigure: auto
+      #authorizationServerUrl: "${AUTH0_OIDC_BASE_URL}/authorize"
+      clientId: "${auth0_jenkins_client_id}"
+      clientSecret: "${auth0_jenkins_client_secret}"
+      disableSslVerification: false
+      emailFieldName: "email"
+      escapeHatchEnabled: false
+      #escapeHatchSecret: "{AQAAABAAAAAQEWcyKHhH3EmJVbT0X88In8/XIARKUXcp0lbtSI33pzI=}"
+      fullNameFieldName: "name"
+      groupsFieldName: "https://dev-bdellegrazie/claims/groups"
+      #logoutFromOpenidProvider: false
+      #scopes: "email_verified address openid profile created_at given_name picture identities phone offline_access name nickname family_name email"
+      #tokenServerUrl: "${AUTH0_OIDC_BASE_URL}/oauth/token"
+      #userInfoServerUrl: "${AUTH0_OIDC_BASE_URL}/userinfo"
+      userNameField: "sub"
+      wellKnownOpenIDConfigurationUrl: "${AUTH0_OIDC_BASE_URL}/.well-known/openid-configuration"
+
+# Assuming the Auth0 Authorization Extension is in use:
+#  Needs an additional rule after the auth0-authorization-extension rule like:
+#
+# authz-add-groups-roles-permissions
+# // Add custom namespaced groups, roles or permissions
+# function (user, context, callback) {
+#   var namespace = 'https://dev-bdellegrazie/claims/'; // TODO: set domain as desired
+#   // Elide whichever ones are unnecessary
+#   context.idToken[namespace + "permissions"] = user.permissions;
+#   context.idToken[namespace + "roles"] = user.roles;
+#   context.idToken[namespace + "groups"] = user.groups;
+#
+#   callback(null, user, context);
+# }
+#
+# Use of this custom rule will ensure the token sent to the client is correct.

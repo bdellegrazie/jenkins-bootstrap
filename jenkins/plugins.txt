@@ -21,12 +21,13 @@ git-parameter
 htmlpublisher
 job-dsl
 junit
+oic-auth
 pipeline-model-definition
 plain-credentials
 platformlabeler
 prometheus
 role-strategy
-saml
+#saml
 timestamper
 token-macro
 workflow-aggregator

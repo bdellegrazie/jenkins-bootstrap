@@ -7,8 +7,9 @@ services:
     build:
       context: './jenkins/'
       args:
-        - 'AUTH0_SAML_METADATA_URL'
-        - 'AUTH0_SAML_LOGOUT_URL'
+        #- 'AUTH0_SAML_METADATA_URL'
+        #- 'AUTH0_SAML_LOGOUT_URL'
+        - 'AUTH0_OIDC_BASE_URL'
         - 'DOCKER_GROUP_GID'
         - 'JENKINS_PUBLIC_URL'
       cache_from:
@@ -18,8 +19,9 @@ services:
         - 'bdg/jenkins:latest'
     container_name: 'jenkins'
     environment:
-      - 'AUTH0_SAML_METADATA_URL'
-      - 'AUTH0_SAML_LOGOUT_URL'
+      #- 'AUTH0_SAML_METADATA_URL'
+      #- 'AUTH0_SAML_LOGOUT_URL'
+      - 'AUTH0_OIDC_BASE_URL'
       - 'CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/'  # pragma: allowlist secret
       - 'JENKINS_PUBLIC_URL'
       - 'JAVA_OPTS'
@@ -29,6 +31,8 @@ services:
     ports:
       - '8080:8080'
     secrets:
+      - 'auth0_jenkins_client_id'
+      - 'auth0_jenkins_client_secret'
       - 'bootstrap_ssh_deploy_key'
     volumes:
       - 'jenkins-data:/var/jenkins_home'
@@ -56,6 +60,10 @@ services:
       - './nexus/etc/nexus.properties:/nexus-data/etc/nexus.properties:rw'
 
 secrets:
+  auth0_jenkins_client_id:
+    file: './auth0/Jenkins-Local.id'
+  auth0_jenkins_client_secret:
+    file: './auth0/Jenkins-Local.secret'
   bootstrap_ssh_deploy_key:
     file: './secrets/jenkins-bootstrap-deploy.secret'
   nexus_admin:
