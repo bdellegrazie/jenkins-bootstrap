@@ -11,12 +11,7 @@ scrape_configs:
 
   - job_name: 'cadvisor'
     static_configs:
-      - targets: ['cadvisor:8082']
-
-  - job_name: 'docker'
-    metrics_path: '/metrics'
-    static_configs:
-      - targets: ['host.docker.internal:9323']
+      - targets: ['cadvisor:8080']
 
   - job_name: 'grafana'
     static_configs:
@@ -41,7 +36,7 @@ scrape_configs:
 
   - job_name: 'renderer'
     static_configs:
-      - targets: ['renderer:8083']
+      - targets: ['renderer:8081']
 
 alerting:
   alertmanagers:

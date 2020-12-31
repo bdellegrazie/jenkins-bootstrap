@@ -61,6 +61,7 @@ EOF
 ngrok_start
 ngrok_tunnel jenkins 8080
 
-cat > "${script_dir}/.env" <<END
+cp "${script_dir}/.env.monitoring" "${script_dir}/.env"
+cat >> "${script_dir}/.env" <<END
 JENKINS_PUBLIC_URL=${JENKINS_PUBLIC_URL}
 END

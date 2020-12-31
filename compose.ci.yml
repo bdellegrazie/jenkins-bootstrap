@@ -12,7 +12,7 @@ services:
         - 'DOCKER_GROUP_GID'
         - 'JENKINS_PUBLIC_URL'
       cache_from:
-        - 'jenkins/jenkins:lts-alpine'
+        - 'jenkins/jenkins:lts-slim'
         - 'base'
         - 'jenkins'
         - 'bdg/jenkins:latest'
