@@ -47,6 +47,7 @@ jobs:
                 excludedRegions('')
               }
               pruneBranches()
+              /*
               sparseCheckoutPaths {
                 sparseCheckoutPaths {
                   sparseCheckoutPath {
@@ -54,6 +55,7 @@ jobs:
                   }
                 }
               }
+              */
             }
           }
         }
@@ -79,7 +81,7 @@ jobs:
             removedConfigFilesAction('DELETE')
             removedJobAction('DISABLE')
             removedViewAction('DELETE')
-            sandbox(true)
+            sandbox(false)
             targets('jenkins/jobsDSL/**/*.groovy')
             unstableOnDeprecation(true)
           }
