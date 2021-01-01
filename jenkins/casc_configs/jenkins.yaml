@@ -42,6 +42,7 @@ jenkins:
     rawHtml:
       disableSyntaxHighlighting: false
   mode: NORMAL
+  noUsageStatistics: true
   numExecutors: 2
   remotingSecurity:
     enabled: true
@@ -77,6 +78,19 @@ credentials:
                   privateKey: ${bootstrap_ssh_deploy_key}
 
 unclassified:
+  buildStatusConfig:
+    dbVersion: 2
+    enableGithub: true
+    enableHttp: false
+    enableInfluxDb: false
+    enableStatsd: true
+    httpVerifySSL: false
+    ignoreSendingTestCoverageToInflux: false
+    ignoreSendingTestResultsToInflux: true
+    statsdBucket: "jenkins"
+    statsdHost: "statsd"
+    statsdMaxSize: "1400"
+    statsdPort: "9125"
   defaultFolderConfiguration:
     healthMetrics:
       - worstChildHealthMetric:

@@ -55,6 +55,12 @@ services:
       nofile:
         soft: 65536
         hard: 65536
+    healthcheck:
+      test: 'curl -qsSf -m 10 http://127.0.0.1:8081/service/rest/v1/status'
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
     volumes:
       - 'nexus-data:/nexus-data'
       - './nexus/etc/nexus.properties:/nexus-data/etc/nexus.properties:rw'

@@ -38,6 +38,10 @@ scrape_configs:
     static_configs:
       - targets: ['renderer:8081']
 
+  - job_name: 'statsd'
+    static_configs:
+      - targets: ['statsd:9102']
+
 alerting:
   alertmanagers:
     - api_version: v2

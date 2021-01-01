@@ -36,7 +36,7 @@ services:
     devices:
       - '/dev/kmsg:/dev/kmsg'
     healthcheck:
-      test: 'wget -q --spider --method=HEAD http://127.0.0.1:8080/containers/ || exit 1'
+      test: 'wget -q --spider http://127.0.0.1:8080/containers/ || exit 1'
       interval: 30s
       timeout: 10s
       retries: 3
@@ -112,6 +112,27 @@ services:
       LOG_LEVEL: 'info'
     healthcheck:
       test: 'wget -q --spider http://127.0.0.1:8081/metrics || exit 1'
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # exporter can double as statsd daemon
+  statsd:
+    image: 'prom/statsd-exporter:v0.18.0'
+    container_name: 'statsd'
+    command:
+      - --statsd.mapping-config=/tmp/statsd_mapping.yml
+    volumes:
+      - './statsd/statsd_mapping.yml:/tmp/statsd_mapping.yml'
+    expose:
+      - '9102'
+      - '9125'
+      - '9125/udp'
+    ports:
+      - '9102:9102'
+    healthcheck:
+      test: 'wget -q --spider http://127.0.0.1:9102/ || exit 1'
       interval: 30s
       timeout: 10s
       retries: 3
