@@ -83,7 +83,7 @@ unclassified:
     enableGithub: true
     enableHttp: false
     enableInfluxDb: false
-    enableStatsd: true
+    enableStatsd: false
     httpVerifySSL: false
     ignoreSendingTestCoverageToInflux: false
     ignoreSendingTestResultsToInflux: true

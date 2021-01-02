@@ -118,26 +118,27 @@ services:
       start_period: 10s
 
   # exporter can double as statsd daemon
-  statsd:
-    image: 'prom/statsd-exporter:v0.18.0'
-    container_name: 'statsd'
-    command:
-      - --web.enable-lifecycle
-      - --statsd.mapping-config=/tmp/statsd_mapping.yml
-    volumes:
-      - './statsd/statsd_mapping.yml:/tmp/statsd_mapping.yml'
-    expose:
-      - '9102'
-      - '9125'
-      - '9125/udp'
-    ports:
-      - '9102:9102'
-    healthcheck:
-      test: 'wget -q --spider http://127.0.0.1:9102/ || exit 1'
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+  # Intent was to get job metrics but not required if using the Prometheus plugin
+  #statsd:
+  #  image: 'prom/statsd-exporter:v0.18.0'
+  #  container_name: 'statsd'
+  #  command:
+  #    - --web.enable-lifecycle
+  #    - --statsd.mapping-config=/tmp/statsd_mapping.yml
+  #  volumes:
+  #    - './statsd/statsd_mapping.yml:/tmp/statsd_mapping.yml'
+  #  expose:
+  #    - '9102'
+  #    - '9125'
+  #    - '9125/udp'
+  #  ports:
+  #    - '9102:9102'
+  #  healthcheck:
+  #    test: 'wget -q --spider http://127.0.0.1:9102/ || exit 1'
+  #    interval: 30s
+  #    timeout: 10s
+  #    retries: 3
+  #    start_period: 10s
 
 volumes:
   alertmanager-data:
