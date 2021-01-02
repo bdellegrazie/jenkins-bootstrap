@@ -1,0 +1,107 @@
+---
+# Bucket to be prepended to the metrics you are sending (with trailing period). Example:
+# service.jenkins.pipeline-metrics.
+# Final metrics paths will follow the pattern:
+# {bucket}.{folder}.{subfolder}.{job name}.{branch}.job.status
+# {bucket}.{folder}.{subfolder}.{job name}.{branch}.job.duration
+# {bucket}.{folder}.{subfolder}.{job name}.{branch}.stage.{stage name}.status
+# {bucket}.{folder}.{subfolder}.{job name}.{branch}.stage.{stage name}.duration
+# Note: For non multibranch pipelines the branch portion of the path is omitted.
+#
+
+mappings:
+  - match: "jenkins.pipeline.*.*.job.blocked_duration"
+    name: "pipeline_job_blocked_duration"
+    labels:
+      folder: "$1"
+      job: "$2"
+  - match: "jenkins.pipeline.*.*.job.duration"
+    name: "pipeline_job_duration"
+    labels:
+      folder: "$1"
+      job: "$2"
+  - match: "jenkins.pipeline.*.*.job.status"
+    name: "pipeline_job_status"
+    labels:
+      folder: "$1"
+      job: "$2"
+
+  - match: "jenkins.pipeline.*.*.job.status.*"
+    name: "pipeline_job_status_$3"
+    labels:
+      folder: "$1"
+      job: "$2"
+  - match: "jenkins.pipeline.*.*.job.*.duration"
+    name: "pipeline_job_$3_duration"
+    labels:
+      folder: "$1"
+      job: "$2"
+
+  - match: "jenkins.pipeline.*.*.stage.*.duration"
+    name: "pipeline_job_duration"
+    labels:
+      folder: "$1"
+      job: "$2"
+      stage: "$3"
+  - match: "jenkins.pipeline.*.*.stage.*.status"
+    name: "pipeline_job_status"
+    labels:
+      folder: "$1"
+      job: "$2"
+      stage: "$3"
+  - match: "jenkins.pipeline.*.*.stage.*.status.*"
+    name: "pipeline_job_status_$4"
+    labels:
+      folder: "$1"
+      job: "$2"
+      stage: "$3"
+  - match: "jenkins.pipeline.*.*.stage.*.status.*.non_stage_error"
+    name: "pipeline_job_status_non_stage_error"
+    labels:
+      folder: "$1"
+      job: "$2"
+      stage: "$3"
+      node: "$4"
+
+  - match: "jenkins.pipeline.*.*.*.job.duration"
+    name: "pipeline_job_duration"
+    labels:
+      folder: "$1"
+      job: "$2"
+      branch: "$3"
+  - match: "jenkins.pipeline.*.*.*.job.status"
+    name: "pipeline_job_status"
+    labels:
+      folder: "$1"
+      job: "$2"
+      branch: "$3"
+
+  - match: "jenkins.pipeline.*.*.*.stage.*.duration"
+    name: "pipeline_job_duration"
+    labels:
+      folder: "$1"
+      job: "$2"
+      branch: "$3"
+      stage: "$4"
+  - match: "jenkins.pipeline.*.*.*.stage.*.status"
+    name: "pipeline_job_status"
+    labels:
+      folder: "$1"
+      job: "$2"
+      branch: "$3"
+      stage: "$4"
+  - match: "jenkins.pipeline.*.*.*.stage.*.status.*"
+    name: "pipeline_job_status_$5"
+    labels:
+      folder: "$1"
+      job: "$2"
+      branch: "$3"
+      stage: "$4"
+  - match: "jenkins.pipeline.*.*.*.stage.*.status.*.non_stage_error"
+    name: "pipeline_job_status_non_stage_error"
+    labels:
+      folder: "$1"
+      job: "$2"
+      branch: "$3"
+      stage: "$4"
+      node: "$5"

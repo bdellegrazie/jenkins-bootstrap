@@ -122,6 +122,7 @@ services:
     image: 'prom/statsd-exporter:v0.18.0'
     container_name: 'statsd'
     command:
+      - --web.enable-lifecycle
       - --statsd.mapping-config=/tmp/statsd_mapping.yml
     volumes:
       - './statsd/statsd_mapping.yml:/tmp/statsd_mapping.yml'
