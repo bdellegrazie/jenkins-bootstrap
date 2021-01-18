@@ -1,0 +1,22 @@
+---
+version: '3.8'
+
+services:
+  jenkins:
+    image: 'bdg/squid:latest'
+    build:
+      context: './squid/'
+      args:
+      cache_from:
+        - 'debian/buster:lts-slim'
+        - 'bdg/squid:latest'
+    container_name: 'squid'
+    environment:
+    expose:
+      - 3128
+    volumes:
+      - './squid/cache:/var/cache/squid'
+
+secrets:
+
+volumes:
