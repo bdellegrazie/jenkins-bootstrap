@@ -42,11 +42,11 @@ services:
       - '/var/run/docker.sock:/var/run/docker.sock:rw'
 
   nexus:
-    image: 'sonatype/nexus3:3.29.2'
+    image: 'sonatype/nexus3:3.30.0'
     container_name: 'nexus'
     user: 'nexus'
     environment:
-      NEXUS_SECURITY_RANDOMPASSWORD: 'false'
+      NEXUS_SECURITY_RANDOMPASSWORD: 'false'  # pragma: allowlist secret
     ports:
       - '8081:8081'
       - '18090:18090'
