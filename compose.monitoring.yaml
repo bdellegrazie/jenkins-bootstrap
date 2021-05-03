@@ -120,7 +120,7 @@ services:
   # exporter can double as statsd daemon
   # Intent was to get job metrics but not required if using the Prometheus plugin
   statsd:
-    image: 'prom/statsd-exporter:v0.20.0'
+    image: 'prom/statsd-exporter:v0.20.1'
     container_name: 'statsd'
     command:
       - --web.enable-lifecycle
