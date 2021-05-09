@@ -11,11 +11,11 @@ repos:
       - id: end-of-file-fixer
         exclude: auth0
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.26.0
+    rev: v1.26.1
     hooks:
       - id: yamllint
   - repo: https://github.com/Yelp/detect-secrets.git
-    rev: v1.0.3
+    rev: v1.1.0
     hooks:
     -   id: detect-secrets
         args:

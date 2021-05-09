@@ -43,7 +43,7 @@ services:
       start_period: 10s
 
   grafana:
-    image: 'grafana/grafana:7.5.6'
+    image: 'grafana/grafana:7.5.5'
     container_name: 'grafana'
     volumes:
       - 'grafana-data:/var/lib/grafana'
@@ -120,7 +120,7 @@ services:
   # exporter can double as statsd daemon
   # Intent was to get job metrics but not required if using the Prometheus plugin
   statsd:
-    image: 'prom/statsd-exporter:v0.20.1'
+    image: 'prom/statsd-exporter:v0.20.2'
     container_name: 'statsd'
     command:
       - --web.enable-lifecycle
