@@ -3,7 +3,7 @@ version: '3.8'
 
 services:
   alertmanager:
-    image: 'prom/alertmanager:v0.21.0'
+    image: 'prom/alertmanager:v0.22.2'
     container_name: 'alertmanager'
     command:
       - --config.file=/etc/alertmanager/config.yml
@@ -22,7 +22,7 @@ services:
       start_period: 10s
 
   cadvisor:
-    image: 'gcr.io/cadvisor/cadvisor:v0.39.0'
+    image: 'gcr.io/cadvisor/cadvisor:v0.39.2'
     container_name: 'cadvisor'
     privileged: true
     expose:
@@ -43,7 +43,7 @@ services:
       start_period: 10s
 
   grafana:
-    image: 'grafana/grafana:7.5.5'
+    image: 'grafana/grafana:8.0.4'
     container_name: 'grafana'
     volumes:
       - 'grafana-data:/var/lib/grafana'
@@ -77,7 +77,7 @@ services:
       start_period: 10s
 
   prometheus:
-    image: 'prom/prometheus:v2.27.0'
+    image: 'prom/prometheus:v2.28.1'
     container_name: 'prometheus'
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -101,7 +101,7 @@ services:
       start_period: 10s
 
   renderer:
-    image: 'grafana/grafana-image-renderer:2.0.1'
+    image: 'grafana/grafana-image-renderer:3.0.1'
     container_name: 'renderer'
     expose:
       - '8081'
@@ -120,7 +120,7 @@ services:
   # exporter can double as statsd daemon
   # Intent was to get job metrics but not required if using the Prometheus plugin
   statsd:
-    image: 'prom/statsd-exporter:v0.20.2'
+    image: 'prom/statsd-exporter:v0.21.0'
     container_name: 'statsd'
     command:
       - --web.enable-lifecycle
