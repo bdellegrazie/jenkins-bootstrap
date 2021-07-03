@@ -37,8 +37,8 @@ services:
     volumes:
       - 'jenkins-data:/var/jenkins_home'
       - './jenkins/casc_configs:/var/jenkins_home/casc_configs:ro'
-      - './jenkins/build:/build:rw'
-      - './jenkins/workspace:/workspace:rw'
+      - './jenkins/builds:/builds:rw'
+      - './jenkins/workspaces:/workspaces:rw'
       - '/var/run/docker.sock:/var/run/docker.sock:rw'
 
   nexus:

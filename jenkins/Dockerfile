@@ -15,6 +15,9 @@ ARG DOCKER_GROUP_NAME=docker
 ARG DOCKER_GROUP_GID=998
 RUN addgroup --system --gid ${DOCKER_GROUP_GID} ${DOCKER_GROUP_NAME} \
   && addgroup ${user} ${DOCKER_GROUP_NAME}
+
+RUN mkdir -p /builds /workspaces && chown ${user}:${DOCKER_GROUP_GID} /builds /workspaces
+
 USER ${user}
 
 COPY logging.properties.override /usr/share/jenkins/ref/
@@ -42,3 +45,5 @@ ENV JENKINS_PUBLIC_URL=${JENKINS_PUBLIC_URL}
 # OIDC Well-Known metadata URL
 ARG AUTH0_OIDC_BASE_URL=https://dev-bdellegrazie.eu.auth0.com
 ENV AUTH0_OIDC_BASE_URL=${AUTH0_OIDC_BASE_URL}
+
+VOLUME ["/builds", "/workspaces"]

@@ -43,7 +43,7 @@ jenkins:
       disableSyntaxHighlighting: false
   mode: NORMAL
   noUsageStatistics: true
-  numExecutors: 2
+  numExecutors: 0
   remotingSecurity:
     enabled: true
   slaveAgentPort: -1

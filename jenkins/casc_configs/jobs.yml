@@ -59,7 +59,7 @@ jobs:
             }
           }
         }
-        label('master')
+        // label('master')
         logRotator {
           numToKeep(20)
         }
