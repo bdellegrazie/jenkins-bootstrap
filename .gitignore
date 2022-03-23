@@ -12,11 +12,8 @@
 
 /home/
 !/home/.gitignore
-
 /jenkins-bootstrap-deploy.*
-
 /.direnv/
-
 /.env
 
 # git-secret

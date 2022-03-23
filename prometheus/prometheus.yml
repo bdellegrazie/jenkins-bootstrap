@@ -1,7 +1,7 @@
 ---
 global:
-  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
-  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  scrape_interval: 15s  # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s  # Evaluate rules every 15 seconds. The default is every 1 minute.
   # scrape_timeout is set to the global default (10s).
 
 scrape_configs:
@@ -16,6 +16,15 @@ scrape_configs:
   - job_name: 'grafana'
     static_configs:
       - targets: ['grafana:3000']
+
+  - job_name: 'influxdb'
+    static_configs:
+      - targets: ['influxdb:9122']
+
+  - job_name: 'influxdb-exporter'
+    metrics_path: '/metrics/exporter'
+    static_configs:
+      - targets: ['influxdb:9122']
 
   - job_name: 'jenkins'
     metrics_path: '/prometheus'

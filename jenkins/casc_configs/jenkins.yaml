@@ -43,9 +43,7 @@ jenkins:
       disableSyntaxHighlighting: false
   mode: NORMAL
   noUsageStatistics: true
-  numExecutors: 0
-  remotingSecurity:
-    enabled: true
+  numExecutors: 2
   slaveAgentPort: -1
   systemMessage: "Jenkins configured automatically by Jenkins Configuration as Code Plugin\n\n"
 
@@ -104,6 +102,16 @@ unclassified:
     globalConfigName: "Jenkins CI"
   globalDefaultFlowDurabilityLevel:
     durabilityHint: PERFORMANCE_OPTIMIZED
+  influxDbGlobalConfig:
+    targets:
+      - database: "jenkins"
+        description: "Prometheus"
+        exposeExceptions: true
+        globalListener: true
+        jobScheduledTimeAsPointsTimestamp: true
+        retentionPolicy: "autogen"
+        url: "http://influxdb:9122"
+        usingJenkinsProxy: true
   location:
     adminAddress: brett.dellegrazie+jenkins@gmail.com
     url: "${JENKINS_PUBLIC_URL}"

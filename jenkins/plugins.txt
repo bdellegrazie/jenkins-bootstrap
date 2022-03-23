@@ -20,6 +20,7 @@ github-scm-trait-commit-skip
 git
 git-parameter
 htmlpublisher
+influxdb
 job-dsl
 junit
 oic-auth
@@ -29,6 +30,7 @@ platformlabeler
 prometheus
 role-strategy
 #saml
+simple-theme-plugin
 timestamper
 token-macro
 workflow-aggregator
