@@ -1,5 +1,5 @@
 ---
-version: '3.8'
+version: '3.9'
 
 services:
   jenkins:
@@ -42,7 +42,7 @@ services:
       - '/var/run/docker.sock:/var/run/docker.sock:rw'
 
   nexus:
-    image: 'sonatype/nexus3:3.38.0'
+    image: 'sonatype/nexus3:3.39.0'
     container_name: 'nexus'
     user: 'nexus'
     environment:

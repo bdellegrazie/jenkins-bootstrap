@@ -1,9 +1,9 @@
 ---
-version: '3.8'
+version: '3.9'
 
 services:
   alertmanager:
-    image: 'prom/alertmanager:v0.23.0'
+    image: 'prom/alertmanager:v0.24.0'
     container_name: 'alertmanager'
     command:
       - --config.file=/etc/alertmanager/config.yml
@@ -22,7 +22,7 @@ services:
       start_period: 10s
 
   cadvisor:
-    image: 'gcr.io/cadvisor/cadvisor:v0.39.3'
+    image: 'gcr.io/cadvisor/cadvisor:v0.44.1'
     container_name: 'cadvisor'
     privileged: true
     expose:
@@ -43,7 +43,7 @@ services:
       start_period: 10s
 
   grafana:
-    image: 'grafana/grafana-oss:8.4.4'
+    image: 'grafana/grafana-oss:8.5.5'
     container_name: 'grafana'
     volumes:
       - 'grafana-data:/var/lib/grafana'
@@ -80,7 +80,7 @@ services:
       start_period: 10s
 
   prometheus:
-    image: 'prom/prometheus:v2.34.0'
+    image: 'prom/prometheus:v2.36.1'
     container_name: 'prometheus'
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -124,7 +124,7 @@ services:
   # exporter can double as statsd daemon
   # Intent was to get job metrics but not required if using the Prometheus plugin
   statsd:
-    image: 'prom/statsd-exporter:v0.22.4'
+    image: 'prom/statsd-exporter:v0.22.5'
     container_name: 'statsd'
     command:
       - --web.enable-lifecycle
@@ -145,7 +145,7 @@ services:
       start_period: 10s
 
   influxdb_exporter:
-    image: 'prom/influxdb-exporter:v0.9.0'
+    image: 'prom/influxdb-exporter:v0.9.1'
     container_name: 'influxdb'
     command:
       - --timestamps
