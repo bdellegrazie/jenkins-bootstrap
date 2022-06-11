@@ -7,17 +7,37 @@ script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 NGROK_API="http://127.0.0.1:4040/api"
 
-function ngrok_start() {
-  local _rc=0
-  # Start ngrok as a temporary service
+function ngrok_is_active_linux() {
   set +e
   systemctl --user is-active --quiet ngrok.service
   _rc=$?
   set -e
-  if [[ $_rc -ne 0 ]] ; then
-    systemd-run --user --unit=ngrok ngrok start --config $HOME/.ngrok2/ngrok.yml --none --log stdout --log-format term
+  return "${_rc}"
+}
+
+function ngrok_start_linux() {
+  local _rc=0
+  if ! ngrok_is_active_linux ; then
+    set +e
+    systemd-run --user --unit=ngrok ngrok start --config "$HOME/.ngrok2/ngrok.yml" --none --log stdout --log-format term
+    _rc=$?
+    set -e
     sleep 5
   fi
+  if [[ $_rc -eq 0 ]] ; then
+    echo "Ngrok is started "
+  return "${_rc}"
+}
+
+function ngrok_stop_linux() {
+  local _rc=0
+  if ngrok_is_active_linux ; then
+    set +e
+    systemctl --user stop ngrok.service
+    _rc=$?
+    set -e
+  fi
+  return "${_rc}"
 }
 
 function ngrok_tunnel() {
@@ -58,7 +78,7 @@ EOF
   _export="${_export#\"}"
 }
 
-ngrok_start
+ngrok_start_linux
 ngrok_tunnel jenkins 8080
 
 cp "${script_dir}/.env.monitoring" "${script_dir}/.env"
