@@ -97,9 +97,6 @@ unclassified:
     apiRateLimitChecker: ThrottleForNormalize
   gitHubPluginConfig:
     hookUrl: "${JENKINS_PUBLIC_URL}/github-webhook/"
-  gitSCM:
-    globalConfigEmail: "brett.dellegrazie+jenkins@gmail.com"
-    globalConfigName: "Jenkins CI"
   globalDefaultFlowDurabilityLevel:
     durabilityHint: PERFORMANCE_OPTIMIZED
   influxDbGlobalConfig:
@@ -131,6 +128,9 @@ unclassified:
     path: "prometheus"
     processingDisabledBuilds: false
     useAuthenticatedEndpoint: false
+  scmGit:
+    globalConfigEmail: "brett.dellegrazie+jenkins@gmail.com"
+    globalConfigName: "Jenkins CI"
   timestamper:
     allPipelines: true
     systemTimeFormat: "yyyy-MM-dd HH:mm:ss.SSS' | '"

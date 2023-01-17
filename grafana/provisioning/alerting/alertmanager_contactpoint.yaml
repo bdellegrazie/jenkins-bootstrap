@@ -1,0 +1,17 @@
+# config file version
+apiVersion: 1
+
+# https://grafana.com/docs/grafana/latest/alerting/set-up/provision-alerting-resources/file-provisioning/#provision-contact-points
+
+deleteContactPoints:
+  - orgId: 1
+    uid: prometheus_alertmanager_1
+
+contactPoints:
+  - orgId: 1
+    name: AlertManager
+    receivers:
+      - uid: prometheus_alertmanager_1
+        type: prometheus-alertmanager
+        settings:
+          url: http://alertmanager:9093

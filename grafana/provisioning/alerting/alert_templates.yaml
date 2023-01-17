@@ -1,0 +1,13 @@
+# config file version
+apiVersion: 1
+
+# https://grafana.com/docs/grafana/latest/alerting/set-up/provision-alerting-resources/file-provisioning/#provision-templates
+
+deleteTemplates:
+  - orgId: 1
+    name: alert_template_v1
+
+templates:
+  - orgID: 1
+    name: alert_template_v1
+    template: Alerting with a custom text template

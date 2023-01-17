@@ -8,12 +8,16 @@ deleteDatasources:
 datasources:
   - name: 'Prometheus'
     type: 'prometheus'
-    version: 3
+    uid: prometheus_1
+    alertManagerUid: alertmanager_1
+    version: 5
     access: proxy
     orgId: 1
     url: 'http://prometheus:9090'
     isDefault: true
     editable: false
+    prometheusVersion: 2.37.5
+    prometheusType: Prometheus
     jsonData:
       httpMethod: 'POST'
       manageAlerts: true

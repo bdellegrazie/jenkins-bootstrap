@@ -8,7 +8,9 @@ deleteDatasources:
 datasources:
   - name: AlertManager
     type: alertmanager
+    uid: alertmanager_1
     orgId: 1
+    version: 2
     url: http://alertmanager:9093
     access: proxy
     editable: false

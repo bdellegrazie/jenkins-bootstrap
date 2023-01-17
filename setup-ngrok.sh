@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 # Unofficial bash strict mode
-set -o pipefail
+set -euo pipefail
 IFS=$'\n\t'
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -26,6 +26,7 @@ function ngrok_start_linux() {
   fi
   if [[ $_rc -eq 0 ]] ; then
     echo "Ngrok is started "
+  fi
   return "${_rc}"
 }
 

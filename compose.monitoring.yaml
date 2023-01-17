@@ -3,7 +3,7 @@ version: '3.9'
 
 services:
   alertmanager:
-    image: 'prom/alertmanager:v0.24.0'
+    image: 'quay.io/prometheus/alertmanager:v0.25.0'
     container_name: 'alertmanager'
     command:
       - --config.file=/etc/alertmanager/config.yml
@@ -22,7 +22,7 @@ services:
       start_period: 10s
 
   cadvisor:
-    image: 'gcr.io/cadvisor/cadvisor:v0.44.1'
+    image: 'gcr.io/cadvisor/cadvisor:v0.47.0'
     container_name: 'cadvisor'
     privileged: true
     expose:
@@ -43,7 +43,7 @@ services:
       start_period: 10s
 
   grafana:
-    image: 'grafana/grafana-oss:8.5.5'
+    image: 'grafana/grafana-oss:9.3.2'
     container_name: 'grafana'
     volumes:
       - 'grafana-data:/var/lib/grafana'
@@ -51,7 +51,7 @@ services:
     environment:
       #GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: ''
       #GF_INSTALL_PLUGINS: ''
-      GF_PLUGINS_ENABLE_ALPHA: 'true'  # Needed for AlertManager plugin
+      #GF_PLUGINS_ENABLE_ALPHA: 'true'  # Needed for AlertManager plugin
       GF_LOG_MODE: 'console'
       GF_LOG_LEVEL: 'info'
       GF_ANALYTICS_REPORTING_ENABLED: 'false'
@@ -65,8 +65,8 @@ services:
       GF_AUTH_ANONYMOUS_ORG_ROLE: 'Admin'
       GF_AUTH_BASIC_ENABLED: 'true'
       GF_USERS_ALLOW_SIGN_UP: 'false'
-      GF_RENDERING_SERVER_URL: 'http://renderer:8081/render'
-      GF_RENDERING_CALLBACK_URL: 'http://grafana:${GRAFANA_PORT}/'
+      #GF_RENDERING_SERVER_URL: 'http://renderer:8081/render'
+      #GF_RENDERING_CALLBACK_URL: 'http://grafana:${GRAFANA_PORT}/'
       #GF_LOG_FILTERS: 'rendering:debug'
       GF_UNIFIED_ALERTING_ENABLED: 'true'
       GF_ALERTING_ENABLED: 'false'
@@ -80,7 +80,7 @@ services:
       start_period: 10s
 
   prometheus:
-    image: 'prom/prometheus:v2.36.1'
+    image: 'quay.io/prometheus/prometheus:v2.37.5'
     container_name: 'prometheus'
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -103,28 +103,28 @@ services:
       retries: 3
       start_period: 10s
 
-  renderer:
-    image: 'grafana/grafana-image-renderer:3.4.2'
-    container_name: 'renderer'
-    expose:
-      - '8081'
-    environment:
-      BROWSER_TZ: 'Europe/London'
-      ENABLE_METRICS: 'true'
-      IGNORE_HTTPS_ERROR: 'true'
-      LOG_LEVEL: 'info'
-      RENDERING_MODE: 'reusable'
-    healthcheck:
-      test: 'wget -q --spider http://127.0.0.1:8081/metrics || exit 1'
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+  #renderer:
+  #  image: 'grafana/grafana-image-renderer:3.6.3'
+  #  container_name: 'renderer'
+  #  expose:
+  #    - '8081'
+  #  environment:
+  #    BROWSER_TZ: 'Europe/London'
+  #    ENABLE_METRICS: 'true'
+  #    IGNORE_HTTPS_ERROR: 'true'
+  #    LOG_LEVEL: 'info'
+  #    RENDERING_MODE: 'reusable'
+  #  healthcheck:
+  #    test: 'wget -q --spider http://127.0.0.1:8081/metrics || exit 1'
+  #    interval: 30s
+  #    timeout: 10s
+  #    retries: 3
+  #    start_period: 10s
 
   # exporter can double as statsd daemon
   # Intent was to get job metrics but not required if using the Prometheus plugin
   statsd:
-    image: 'prom/statsd-exporter:v0.22.5'
+    image: 'quay.io/prometheus/statsd-exporter:v0.23.0'
     container_name: 'statsd'
     command:
       - --web.enable-lifecycle
@@ -145,7 +145,7 @@ services:
       start_period: 10s
 
   influxdb_exporter:
-    image: 'prom/influxdb-exporter:v0.9.1'
+    image: 'quay.io/prometheus/influxdb-exporter:v0.11.1'
     container_name: 'influxdb'
     command:
       - --timestamps

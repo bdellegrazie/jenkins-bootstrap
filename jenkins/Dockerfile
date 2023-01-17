@@ -4,7 +4,8 @@ FROM jenkins/jenkins:lts-slim as base
 ARG BUILD_VERSION=0
 LABEL name="bdellegrazie/jenkins" vendor="brett.dellegrazie@gmail.com" version="${JENKINS_VERSION}-${BUILD_VERSION}"
 COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
-RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
+RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt && \
+  rm -rf "${HOME}/.cache/jenkins-plugin-management-cli" "${PWD}/.cache/jenkins-plugin-management-cli"
 RUN echo 2.0 > /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state
 
 FROM base as jenkins
