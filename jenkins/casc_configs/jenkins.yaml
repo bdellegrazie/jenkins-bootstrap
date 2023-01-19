@@ -44,6 +44,9 @@ jenkins:
   mode: NORMAL
   noUsageStatistics: true
   numExecutors: 2
+  projectNamingStrategy:
+    roleBased:
+      forceExistingJobs: true
   slaveAgentPort: -1
   systemMessage: "Jenkins configured automatically by Jenkins Configuration as Code Plugin\n\n"
 
@@ -52,6 +55,11 @@ security:
     creationOfLegacyTokenEnabled: false
     tokenGenerationOnCreationEnabled: false
     usageStatisticsEnabled: true
+  gitHooks:
+    allowedOnAgents: false
+    allowedOnController: false
+  gitHostKeyVerificationConfiguration:
+    sshHostKeyVerificationStrategy: "noHostKeyVerificationStrategy"
   globalJobDslSecurityConfiguration:
     useScriptSecurity: true
   queueItemAuthenticator:
@@ -76,6 +84,9 @@ credentials:
                   privateKey: ${bootstrap_ssh_deploy_key}
 
 unclassified:
+  buildDiscarders:
+    configuredBuildDiscarders:
+      - "jobBuildDiscarder"
   buildStatusConfig:
     dbVersion: 2
     enableGithub: true
@@ -126,6 +137,7 @@ unclassified:
     fetchTestResults: true
     jobAttributeName: "jenkins_job"
     path: "prometheus"
+    perBuildMetrics: true
     processingDisabledBuilds: false
     useAuthenticatedEndpoint: false
   scmGit:
