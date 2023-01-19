@@ -23,6 +23,13 @@ USER ${user}
 
 COPY logging.properties.override /usr/share/jenkins/ref/
 
+# Core configuration
+ENV JENKINS_JAVA_OPTS -Djava.util.logging.config.file=/var/jenkins_home/logging.properties\
+ -Djenkins.model.Jenkins.buildsDir='/builds/${ITEM_FULL_NAME}'\
+ -Djenkins.model.Jenkins.workspacesDir='/workspaces/${ITEM_FULL_NAME}'
+ENV JENKINS_OPTS  --httpPort=8080
+ENV JENKINS_SLAVE_AGENT_PORT -1
+
 # Public URL without a trailing slash
 ARG JENKINS_PUBLIC_URL=http://localhost:8080
 ENV JENKINS_PUBLIC_URL=${JENKINS_PUBLIC_URL}
