@@ -12,7 +12,7 @@ configuration-as-code-groovy
 credentials
 credentials-binding
 database
-database-h2
+database-postgresql
 docker-plugin
 #docker-workflow
 github

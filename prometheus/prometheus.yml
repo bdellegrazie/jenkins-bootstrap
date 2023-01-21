@@ -39,6 +39,10 @@ scrape_configs:
   #  static_configs:
   #    - targets: ['nexus:8081']
 
+  - job_name: 'pg_exporter'
+    static_configs:
+      - targets: ['pg_exporter:9187']
+
   - job_name: 'prometheus'
     static_configs:
       - targets: ['prometheus:9090']

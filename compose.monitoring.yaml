@@ -53,7 +53,7 @@ services:
       #GF_INSTALL_PLUGINS: ''
       #GF_PLUGINS_ENABLE_ALPHA: 'true'  # Needed for AlertManager plugin
       GF_LOG_MODE: 'console'
-      GF_LOG_LEVEL: 'info'
+      GF_LOG_LEVEL: 'warn'
       GF_ANALYTICS_REPORTING_ENABLED: 'false'
       GF_ANALYTICS_CHECK_FOR_UPDATES: 'false'
       # Disable all login prompts and security features
@@ -156,11 +156,31 @@ services:
   #    retries: 3
   #    start_period: 10s
 
+  postgres_exporter:
+    image: 'quay.io/prometheuscommunity/postgres-exporter:v0.11.1'
+    container_name: 'pg_exporter'
+    environment:
+      DATA_SOURCE_URI: "db?sslmode=disable"
+      DATA_SOURCE_USER: 'postgres'
+      DATA_SOURCE_PASS_FILE: '/run/secrets/db_admin'
+    ports:
+      - '9187:9187'
+    healthcheck:
+      test: 'wget -q --spider http://127.0.0.1:9187/ || exit 1'
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    secrets:
+      - db_admin
+
 volumes:
   alertmanager-data:
   grafana-data:
   prometheus-data:
 
 secrets:
+  db_admin:
+    file: './db/admin.secret'
   nexus_admin:
     file: './nexus/admin.secret'

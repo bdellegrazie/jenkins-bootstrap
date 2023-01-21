@@ -23,6 +23,8 @@ services:
       #- 'AUTH0_SAML_LOGOUT_URL'
       - 'AUTH0_OIDC_BASE_URL'
       - 'CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/'  # pragma: allowlist secret
+      - 'DB_HOSTNAME=db'
+      - 'DB_USERNAME=postgres'
       - 'JENKINS_PUBLIC_URL'
       - 'TRY_UPGRADE_IF_NO_MARKER=true'
     ports:
@@ -31,12 +33,36 @@ services:
       - 'auth0_jenkins_client_id'
       - 'auth0_jenkins_client_secret'
       - 'bootstrap_ssh_deploy_key'
+      - 'db_admin'
     volumes:
       - 'jenkins-data:/var/jenkins_home'
       - './jenkins/casc_configs:/var/jenkins_home/casc_configs:ro'
       - './jenkins/builds:/builds:rw'
       - './jenkins/workspaces:/workspaces:rw'
       - '/var/run/docker.sock:/var/run/docker.sock:rw'
+    depends_on:
+      - db
+
+  db:
+    image: 'postgres:14-alpine'
+    container_name: 'postgres'
+    shm_size: '256m'
+    environment:
+      POSTGRES_PASSWORD_FILE: '/run/secrets/db_admin'
+      PGDATA: '/data'
+    healthcheck:
+      test: ["/bin/sh", "pg_isready"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    ports:
+      - '5432:5432'
+    secrets:
+      - db_admin
+    volumes:
+      - 'db-data:/data:rw'
+      - './db/initdb.d:/docker-entrypoint-initdb.d:ro'
 
   #nexus:
   #    Fails to set the permissions of /nexus-data/etc/ to nexus:nexus
@@ -80,9 +106,12 @@ secrets:
     file: './auth0/Jenkins-Local.secret'
   bootstrap_ssh_deploy_key:
     file: './secrets/jenkins-bootstrap-deploy.secret'
+  db_admin:
+    file: './db/admin.secret'
   nexus_admin:
     file: './nexus/admin.secret'
 
 volumes:
+  db-data:
   jenkins-data:
   nexus-data:
