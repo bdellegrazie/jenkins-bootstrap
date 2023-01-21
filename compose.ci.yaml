@@ -24,9 +24,6 @@ services:
       - 'AUTH0_OIDC_BASE_URL'
       - 'CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/'  # pragma: allowlist secret
       - 'JENKINS_PUBLIC_URL'
-      - 'JAVA_OPTS'
-      - 'JENKINS_OPTS'
-      - 'JENKINS_SLAVE_AGENT_PORT'
       - 'TRY_UPGRADE_IF_NO_MARKER=true'
     ports:
       - '8080:8080'
@@ -41,29 +38,40 @@ services:
       - './jenkins/workspaces:/workspaces:rw'
       - '/var/run/docker.sock:/var/run/docker.sock:rw'
 
-  nexus:
-    image: 'sonatype/nexus3:3.45.1'
-    container_name: 'nexus'
-    user: 'nexus'
-    environment:
-      NEXUS_SECURITY_RANDOMPASSWORD: 'false'  # pragma: allowlist secret
-    ports:
-      - '8081:8081'
-      - '18090:18090'
-      - '18091:18091'
-    ulimits:
-      nofile:
-        soft: 65536
-        hard: 65536
-    healthcheck:
-      test: 'curl -qsSf -m 10 http://127.0.0.1:8081/service/rest/v1/status'
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-    volumes:
-      - 'nexus-data:/nexus-data'
-      - './nexus/etc/nexus.properties:/nexus-data/etc/nexus.properties:rw'
+  #nexus:
+  #    Fails to set the permissions of /nexus-data/etc/ to nexus:nexus
+  #  image: 'sonatype/nexus3:3.45.1'
+  #  container_name: 'nexus'
+  #  user: 'nexus'
+  #  configs:
+  #    - source: nexus_config
+  #      target: /nexus-data/etc/nexus.properties
+  #      uid: '200'
+  #      gid: '200'
+  #      mode: 0640
+  #  environment:
+  #    NEXUS_SECURITY_RANDOMPASSWORD: 'false'  # pragma: allowlist secret
+  #  ports:
+  #    - '8081:8081'
+  #    - '18090:18090'
+  #    - '18091:18091'
+  #  ulimits:
+  #    nofile:
+  #    soft: 65536
+  #      hard: 65536
+  #  healthcheck:
+  #    test: 'curl -qsSf -m 10 http://127.0.0.1:8081/service/rest/v1/status'
+  #    interval: 30s
+  #    timeout: 10s
+  #    retries: 3
+  #    start_period: 30s
+  #  volumes:
+  #    - 'nexus-data:/nexus-data:rw'
+  #    - './nexus/etc/nexus.properties:/nexus-data/etc/nexus.properties:rw'
+
+configs:
+  nexus_config:
+    file: ./nexus/etc/nexus.properties
 
 secrets:
   auth0_jenkins_client_id:

@@ -9,43 +9,43 @@ scrape_configs:
     static_configs:
       - targets: ['alertmanager:9093']
 
-  - job_name: 'cadvisor'
-    static_configs:
-      - targets: ['cadvisor:8080']
+  #- job_name: 'cadvisor'
+  #  static_configs:
+  #    - targets: ['cadvisor:8080']
 
   - job_name: 'grafana'
     static_configs:
       - targets: ['grafana:3000']
 
-  - job_name: 'influxdb'
-    static_configs:
-      - targets: ['influxdb:9122']
+  #- job_name: 'influxdb'
+  #  static_configs:
+  #    - targets: ['influxdb:9122']
 
-  - job_name: 'influxdb-exporter'
-    metrics_path: '/metrics/exporter'
-    static_configs:
-      - targets: ['influxdb:9122']
+  #- job_name: 'influxdb-exporter'
+  #  metrics_path: '/metrics/exporter'
+  #  static_configs:
+  #    - targets: ['influxdb:9122']
 
   - job_name: 'jenkins'
     metrics_path: '/prometheus'
     static_configs:
       - targets: ['jenkins:8080']
 
-  - job_name: 'nexus'
-    metrics_path: '/service/metrics/prometheus'
-    basic_auth:
-      username: 'admin'
-      password_file: '/run/secrets/nexus_admin'
-    static_configs:
-      - targets: ['nexus:8081']
+  #- job_name: 'nexus'
+  #  metrics_path: '/service/metrics/prometheus'
+  #  basic_auth:
+  #    username: 'admin'
+  #    password_file: '/run/secrets/nexus_admin'
+  #  static_configs:
+  #    - targets: ['nexus:8081']
 
   - job_name: 'prometheus'
     static_configs:
       - targets: ['prometheus:9090']
 
-  - job_name: 'renderer'
-    static_configs:
-      - targets: ['renderer:8081']
+  #- job_name: 'renderer'
+  #  static_configs:
+  #    - targets: ['renderer:8081']
 
   - job_name: 'statsd'
     static_configs:

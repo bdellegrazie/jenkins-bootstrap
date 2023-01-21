@@ -11,8 +11,10 @@ configuration-as-code
 configuration-as-code-groovy
 credentials
 credentials-binding
+database
+database-h2
 docker-plugin
-docker-workflow
+#docker-workflow
 github
 github-autostatus
 github-branch-source
@@ -20,9 +22,10 @@ github-scm-trait-commit-skip
 git
 git-parameter
 htmlpublisher
-influxdb
+#influxdb
 job-dsl
 junit
+junit-sql-storage
 oic-auth
 pipeline-model-definition
 plain-credentials

@@ -68,6 +68,9 @@ security:
           strategy: "triggeringUsersAuthorizationStrategy"
   sSHD:
     port: -1
+  scriptApproval:
+    approvedScriptHashes:
+      - "SHA512:a3cf06eac5d1acd6025626de3796fbe5d7121a203bbda847cd63158b5586b02cfdbe8c943565c059fc65dcb355953bdf6a82fd1225819b2f8a6a8279272bde05"
 
 credentials:
   system:
@@ -89,10 +92,10 @@ unclassified:
       - "jobBuildDiscarder"
   buildStatusConfig:
     dbVersion: 2
-    enableGithub: true
+    enableGithub: false
     enableHttp: false
     enableInfluxDb: false
-    enableStatsd: false
+    enableStatsd: true
     httpVerifySSL: false
     ignoreSendingTestCoverageToInflux: false
     ignoreSendingTestResultsToInflux: true
@@ -108,25 +111,41 @@ unclassified:
     apiRateLimitChecker: ThrottleForNormalize
   gitHubPluginConfig:
     hookUrl: "${JENKINS_PUBLIC_URL}/github-webhook/"
+  globalDatabaseConfiguration:
+    database:
+      localH2:
+        autoServer: true
+        path: "${JENKINS_HOME}/global"
   globalDefaultFlowDurabilityLevel:
     durabilityHint: PERFORMANCE_OPTIMIZED
   influxDbGlobalConfig:
     targets:
       - database: "jenkins"
         description: "Prometheus"
-        exposeExceptions: true
+        exposeExceptions: false
         globalListener: true
         jobScheduledTimeAsPointsTimestamp: true
         retentionPolicy: "autogen"
         url: "http://influxdb:9122"
         usingJenkinsProxy: true
+  junitTestResultStorage:
+    storage:
+      database:
+        skipCleanupRunsOnDeletion: true
   location:
     adminAddress: brett.dellegrazie+jenkins@gmail.com
     url: "${JENKINS_PUBLIC_URL}"
+  perItemDatabaseConfiguration:
+    database:
+      perItemH2Database:
+        autoServer: true
   platformLabelerGlobalConfiguration:
     labelConfig:
       version: false
   prometheusConfiguration:
+    appendParamLabel: false
+    appendStatusLabel: true
+    collectDiskUsage: true
     collectingMetricsPeriodInSeconds: 120
     countAbortedBuilds: true
     countFailedBuilds: true

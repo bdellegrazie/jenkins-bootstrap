@@ -21,26 +21,26 @@ services:
       retries: 3
       start_period: 10s
 
-  cadvisor:
-    image: 'gcr.io/cadvisor/cadvisor:v0.47.0'
-    container_name: 'cadvisor'
-    privileged: true
-    expose:
-      - '8080'
-    volumes:
-      - '/:/rootfs:ro'
-      - '/var/run:/var/run:ro'
-      - '/sys:/sys:ro'
-      - '/var/lib/docker/:/var/lib/docker/:ro'
-      - '/dev/disk/:/dev/disk:ro'
-    devices:
-      - '/dev/kmsg:/dev/kmsg'
-    healthcheck:
-      test: 'wget -q --spider http://127.0.0.1:8080/containers/ || exit 1'
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+  #cadvisor:
+  #  image: 'gcr.io/cadvisor/cadvisor:v0.47.0'
+  #  container_name: 'cadvisor'
+  #  privileged: true
+  #  expose:
+  #    - '8080'
+  #  volumes:
+  #    - '/:/rootfs:ro'
+  #    - '/var/run:/var/run:ro'
+  #    - '/sys:/sys:ro'
+  #    - '/var/lib/docker/:/var/lib/docker/:ro'
+  #    - '/dev/disk/:/dev/disk:ro'
+  #  devices:
+  #    - '/dev/kmsg:/dev/kmsg'
+  #  healthcheck:
+  #    test: 'wget -q --spider http://127.0.0.1:8080/containers/ || exit 1'
+  #    interval: 30s
+  #    timeout: 10s
+  #    retries: 3
+  #    start_period: 10s
 
   grafana:
     image: 'grafana/grafana-oss:9.3.2'
@@ -135,8 +135,6 @@ services:
       - '9102'
       - '9125'
       - '9125/udp'
-    ports:
-      - '9102:9102'
     healthcheck:
       test: 'wget -q --spider http://127.0.0.1:9102/ || exit 1'
       interval: 30s
@@ -144,19 +142,19 @@ services:
       retries: 3
       start_period: 10s
 
-  influxdb_exporter:
-    image: 'quay.io/prometheus/influxdb-exporter:v0.11.1'
-    container_name: 'influxdb'
-    command:
-      - --timestamps
-    expose:
-      - '9122'
-    healthcheck:
-      test: 'wget -q --spider http://127.0.0.1:9122/ || exit 1'
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+  #influxdb_exporter:
+  #  image: 'quay.io/prometheus/influxdb-exporter:v0.11.1'
+  #  container_name: 'influxdb'
+  #  command:
+  #    - --timestamps
+  #  expose:
+  #    - '9122'
+  #  healthcheck:
+  #    test: 'wget -q --spider http://127.0.0.1:9122/ || exit 1'
+  #    interval: 30s
+  #    timeout: 10s
+  #    retries: 3
+  #    start_period: 10s
 
 volumes:
   alertmanager-data:
