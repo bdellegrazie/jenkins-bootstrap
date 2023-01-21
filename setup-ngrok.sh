@@ -19,7 +19,7 @@ function ngrok_start_linux() {
   local _rc=0
   if ! ngrok_is_active_linux ; then
     set +e
-    systemd-run --user --unit=ngrok ngrok start --config "$HOME/.ngrok2/ngrok.yml" --none --log stdout --log-format term
+    systemd-run --user --unit=ngrok ngrok start --config "${XDG_CONFIG_HOME:=${HOME}/.config}/ngrok/ngrok.yml" --none --log stdout --log-format term
     _rc=$?
     set -e
     sleep 5
