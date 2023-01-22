@@ -54,6 +54,11 @@ jobs:
                 recursiveSubmodules(false)
                 shallow(true)
               }
+              submoduleOptions {
+                disable(false)
+                parentCredentials(false)
+                recursive(false)
+              }
               /*
               sparseCheckoutPaths {
                 sparseCheckoutPaths {
