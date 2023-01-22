@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage("Prepare") {
       steps {
-        echo "Prepareing..."
+        echo "Preparing..."
         sleep time: 5
       }
     }
@@ -16,7 +16,16 @@ pipeline {
     stage("Test") {
       steps {
         echo "Testing..."
-        sleep time: 10
+        sh script: '''#!/usr/bin/env bash
+          rm -f report.xml
+          tests/bats-core/bin/bats tests --report-formatter junit
+        '''
+        slep time: 10
+      }
+      post {
+        always {
+          junit testResults: 'report.xml', allowEmptyResults: false
+        }
       }
     }
     stage("Deploy") {

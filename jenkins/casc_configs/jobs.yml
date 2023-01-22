@@ -47,6 +47,13 @@ jobs:
                 excludedRegions('')
               }
               pruneBranches()
+              submodule {
+                depth(3)
+                disableSubmodules(false)
+                parentCredentials(false)
+                recursiveSubmodules(false)
+                shallow(true)
+              }
               /*
               sparseCheckoutPaths {
                 sparseCheckoutPaths {
