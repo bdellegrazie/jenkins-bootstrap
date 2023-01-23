@@ -1,5 +1,8 @@
 pipeline {
   agent any
+  options {
+    ansiColor('xterm')
+  }
   stages {
     stage("Prepare") {
       steps {
@@ -10,28 +13,27 @@ pipeline {
     stage("Build") {
       steps {
         echo "Building..."
-        sleep time: 7
+        sleep time: Math.abs(new Random().nextInt() % (2 - 7)) + 2
       }
     }
     stage("Test") {
       steps {
         echo "Testing..."
         sh script: '''#!/usr/bin/env bash
-          rm -f report.xml
-          tests/bats-core/bin/bats tests --report-formatter junit
+          rm -rf reports/*
+          tests/bats-core/bin/bats tests --formatter pretty --report-formatter junit --output reports || true
         '''
-        slep time: 10
       }
       post {
         always {
-          junit testResults: 'report.xml', allowEmptyResults: false
+          junit allowEmptyResults: true, skipPublishingChecks: true, testResults: 'reports/*.xml'
         }
       }
     }
     stage("Deploy") {
       steps {
         echo "Deploying..."
-        sleep time: 6
+        sleep time: Math.abs(new Random().nextInt() % (2 - 7)) + 2
       }
     }
   }

@@ -23,6 +23,7 @@ services:
       #- 'AUTH0_SAML_LOGOUT_URL'
       - 'AUTH0_OIDC_BASE_URL'
       - 'CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/'  # pragma: allowlist secret
+      - 'DB_NAME=postgres'
       - 'DB_HOSTNAME=db'
       - 'DB_USERNAME=postgres'
       - 'JENKINS_PUBLIC_URL'
@@ -56,8 +57,8 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-    ports:
-      - '5432:5432'
+    expose:
+      - '5432'
     secrets:
       - db_admin
     volumes:

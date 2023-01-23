@@ -15,15 +15,21 @@ jenkins:
         templates:
           - labelString: "docker-agent"
             name: docker
-            dockerTemplateBase:
-              image: "jenkins/inbound-agent"
-              volumes: ~
-              environmentsString: ~
-            remoteFs: "/home/jenkins/agent"
             connector:
               attach:
                 user: "jenkins"
+            dockerTemplateBase:
+              image: "jenkins/inbound-agent"
+              network: "jenkins-bootstrap_default"
+              volumes: ~
+              environmentsString: ~
             instanceCapStr: "10"
+            nodeProperties:
+              - platformLabeler:
+                  labelConfig:
+                    windowsFeatureUpdate: false
+            remoteFs: "/home/jenkins/agent"
+
   crumbIssuer:
     standard:
       excludeClientIPFromCrumb: true
@@ -69,8 +75,7 @@ security:
   sSHD:
     port: -1
   scriptApproval:
-    approvedScriptHashes:
-      - "SHA512:a3cf06eac5d1acd6025626de3796fbe5d7121a203bbda847cd63158b5586b02cfdbe8c943565c059fc65dcb355953bdf6a82fd1225819b2f8a6a8279272bde05"
+    approvedScriptHashes: []
 
 credentials:
   system:
