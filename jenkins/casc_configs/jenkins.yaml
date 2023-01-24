@@ -121,7 +121,7 @@ unclassified:
       postgreSQL:
         database: "${DB_NAME}"
         hostname: "${DB_HOSTNAME}"
-        password: "${db_admin}"
+        password: "${db_jenkins}"
         username: "${DB_USERNAME}"
         validationQuery: "SELECT 1"
   globalDefaultFlowDurabilityLevel:

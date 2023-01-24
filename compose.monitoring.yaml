@@ -45,6 +45,8 @@ services:
   grafana:
     image: 'grafana/grafana-oss:9.3.2'
     container_name: 'grafana'
+    secrets:
+      - db_grafanaro
     volumes:
       - 'grafana-data:/var/lib/grafana'
       - './grafana/provisioning:/etc/grafana/provisioning:ro'
@@ -159,10 +161,13 @@ services:
   postgres_exporter:
     image: 'quay.io/prometheuscommunity/postgres-exporter:v0.11.1'
     container_name: 'pg_exporter'
+    command:
+      - --auto-discover-databases
     environment:
-      DATA_SOURCE_URI: "db?sslmode=disable"
-      DATA_SOURCE_USER: 'postgres'
-      DATA_SOURCE_PASS_FILE: '/run/secrets/db_admin'
+      DATA_SOURCE_URI: "db/postgres?sslmode=disable"
+      DATA_SOURCE_USER: 'monitor'
+      DATA_SOURCE_PASS_FILE: '/run/secrets/db_monitor'
+      PG_EXPORTER_AUTO_DISCOVER_DATABASES: 'true'
     ports:
       - '9187:9187'
     healthcheck:
@@ -172,7 +177,7 @@ services:
       retries: 3
       start_period: 10s
     secrets:
-      - db_admin
+      - db_monitor
 
 volumes:
   alertmanager-data:
@@ -180,7 +185,9 @@ volumes:
   prometheus-data:
 
 secrets:
-  db_admin:
-    file: './db/admin.secret'
+  db_monitor:
+    file: './db/monitor.secret'
+  db_grafanaro:
+    file: './db/grafanaro.secret'
   nexus_admin:
     file: './nexus/admin.secret'
