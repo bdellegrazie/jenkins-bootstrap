@@ -44,6 +44,37 @@ services:
     depends_on:
       - db
 
+  sonarqube:
+    image: 'bdg/sonarqube:latest'
+    build:
+      context: './sonarqube/'
+      cache_from:
+        - 'sonarqube:lts-community'
+    container_name: sonarqube
+    depends_on:
+      - db
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonarqube
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar  # pragma: allowlist secret
+      # Reduce reosurces, not for production use
+      SONAR_JDBC_MAXACTIVE: 20
+      SONAR_JDBC_MAXIDLE: 2
+      SONAR_JDBC_MINIDLE: 0
+      SONAR_JDBC_MAXWAIT: 5000
+      SONAR_WEB_HTTP_MAXTHREADS: 10
+      SONAR_WEB_HTTP_MINTHREADS: 1
+      SONAR_WEB_HTTP_ACCEPTCOUNT: 15
+      SONAR_TELEMETRY_ENABLE: 'false'
+    secrets:
+      - db_sonarqube
+    volumes:
+      - sonarqube-data:/opt/sonarqube/data
+      - sonarqube-extensions:/opt/sonarqube/extensions
+      - sonarqube-logs:/opt/sonarqube/logs
+    ports:
+      - "9000:9000"
+
   db:
     image: 'postgres:14-alpine'
     container_name: 'postgres'
@@ -64,6 +95,7 @@ services:
       - db_grafanaro
       - db_jenkins
       - db_monitor
+      - db_sonarqube
     volumes:
       - 'db-data:/data:rw'
       - './db/initdb.d:/docker-entrypoint-initdb.d:ro'
@@ -118,6 +150,8 @@ secrets:
     file: './db/jenkins.secret'
   db_monitor:
     file: './db/monitor.secret'
+  db_sonarqube:
+    file: './db/sonarqube.secret'
   nexus_admin:
     file: './nexus/admin.secret'
 
@@ -125,3 +159,6 @@ volumes:
   db-data:
   jenkins-data:
   nexus-data:
+  sonarqube-data:
+  sonarqube-logs:
+  sonarqube-extensions:
