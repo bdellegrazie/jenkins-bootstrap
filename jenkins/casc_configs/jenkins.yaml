@@ -29,7 +29,7 @@ jenkins:
                   labelConfig:
                     windowsFeatureUpdate: false
             remoteFs: "/home/jenkins/agent"
-
+            removeVolumes: true
   crumbIssuer:
     standard:
       excludeClientIPFromCrumb: true
