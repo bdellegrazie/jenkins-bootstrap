@@ -56,7 +56,6 @@ services:
     environment:
       SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonarqube
       SONAR_JDBC_USERNAME: sonar
-      SONAR_JDBC_PASSWORD: sonar  # pragma: allowlist secret
       # Reduce reosurces, not for production use
       SONAR_JDBC_MAXACTIVE: 20
       SONAR_JDBC_MAXIDLE: 2
@@ -67,11 +66,16 @@ services:
       SONAR_WEB_HTTP_ACCEPTCOUNT: 15
       SONAR_TELEMETRY_ENABLE: 'false'
     secrets:
-      - db_sonarqube
+      - sonar_jdbc_password
+      - sonar_web_systempasscode
     volumes:
       - sonarqube-data:/opt/sonarqube/data
       - sonarqube-extensions:/opt/sonarqube/extensions
       - sonarqube-logs:/opt/sonarqube/logs
+    expose:
+      - '10100/tcp'
+      - '10101/tcp'
+      - '9114/tcp'
     ports:
       - "9000:9000"
 
@@ -95,7 +99,7 @@ services:
       - db_grafanaro
       - db_jenkins
       - db_monitor
-      - db_sonarqube
+      - sonar_jdbc_password
     volumes:
       - 'db-data:/data:rw'
       - './db/initdb.d:/docker-entrypoint-initdb.d:ro'
@@ -150,10 +154,12 @@ secrets:
     file: './db/jenkins.secret'
   db_monitor:
     file: './db/monitor.secret'
-  db_sonarqube:
-    file: './db/sonarqube.secret'
   nexus_admin:
     file: './nexus/admin.secret'
+  sonar_jdbc_password:
+    file: './db/sonarqube.secret'
+  sonar_web_systempasscode:
+    file: './sonarqube/web_systempasscode.secret'
 
 volumes:
   db-data:

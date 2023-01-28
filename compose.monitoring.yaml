@@ -179,6 +179,25 @@ services:
     secrets:
       - db_monitor
 
+  blackbox_exporter:
+    image: 'quay.io/prometheus/blackbox-exporter:v0.23.0'
+    container_name: 'blackbox_exporter'
+    entrypoint: '/etc/blackbox_exporter/entrypoint.sh'
+    command:
+      - --config.file=/tmp/config.yml
+    expose:
+      - '9115/tcp'
+    healthcheck:
+      test: 'wget -q --spider http://127.0.0.1:9115/ || exit 1'
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    secrets:
+      - sonar_web_systempasscode
+    volumes:
+      - './blackbox:/etc/blackbox_exporter:ro'
+
 volumes:
   alertmanager-data:
   grafana-data:
@@ -191,3 +210,5 @@ secrets:
     file: './db/grafanaro.secret'
   nexus_admin:
     file: './nexus/admin.secret'
+  sonar_web_systempasscode:
+    file: './sonarqube/web_systempasscode.secret'
