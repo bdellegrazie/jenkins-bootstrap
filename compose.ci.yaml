@@ -54,21 +54,25 @@ services:
     depends_on:
       - db
     environment:
-      SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonarqube
-      SONAR_JDBC_USERNAME: sonar
+      # - SONAR_LOG_LEVEL_WEB: "DEBUG"
+      - "SONAR_CORE_SERVERBASEURL=${SONARQUBE_PUBLIC_URL}"
+      - "SONAR_JDBC_URL=jdbc:postgresql://db:5432/sonarqube"
+      - "SONAR_JDBC_USERNAME=sonar"
       # Reduce reosurces, not for production use
-      SONAR_JDBC_MAXACTIVE: 20
-      SONAR_JDBC_MAXIDLE: 2
-      SONAR_JDBC_MINIDLE: 0
-      SONAR_JDBC_MAXWAIT: 5000
-      SONAR_WEB_HTTP_MAXTHREADS: 10
-      SONAR_WEB_HTTP_MINTHREADS: 1
-      SONAR_WEB_HTTP_ACCEPTCOUNT: 15
-      SONAR_TELEMETRY_ENABLE: 'false'
+      - "SONAR_JDBC_MAXACTIVE=20"
+      - "SONAR_JDBC_MAXIDLE=2"
+      - "SONAR_JDBC_MINIDLE=0"
+      - "SONAR_JDBC_MAXWAIT=5000"
+      - "SONAR_WEB_HTTP_MAXTHREADS=10"
+      - "SONAR_WEB_HTTP_MINTHREADS=1"
+      - "SONAR_WEB_HTTP_ACCEPTCOUNT=15"
+      - "SONAR_TELEMETRY_ENABLE=false"
     secrets:
+      - sonar_auth_jwtbase64hs256secret
       - sonar_jdbc_password
       - sonar_web_systempasscode
     volumes:
+      - ./sonarqube/auth:/etc/sonarqube:ro
       - sonarqube-data:/opt/sonarqube/data
       - sonarqube-extensions:/opt/sonarqube/extensions
       - sonarqube-logs:/opt/sonarqube/logs
@@ -156,11 +160,12 @@ secrets:
     file: './db/monitor.secret'
   nexus_admin:
     file: './nexus/admin.secret'
+  sonar_auth_jwtbase64hs256secret:
+    file: './sonarqube/auth_jwtbase64hs256secret.secret'
   sonar_jdbc_password:
     file: './db/sonarqube.secret'
   sonar_web_systempasscode:
     file: './sonarqube/web_systempasscode.secret'
-
 volumes:
   db-data:
   jenkins-data:

@@ -9,7 +9,7 @@ jenkins:
       idpMetadataConfiguration:
         period: ${JENKINS_SAML_METADATA_REFRESH_MIN}  # minutes
         url: "${AUTH0_SAML_METADATA_URL}"
-      logoutUrl: "${AUTH0_SAML_LOGOUT_URL}"
+      logoutUrl: "${AUTH0_JENKINS_SAML_LOGOUT_URL}"
       maximumAuthenticationLifetime: ${JENKINS_SAML_SESSION_LIFETIME_SEC}
       usernameAttributeName: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn"
       usernameCaseConversion: "none"

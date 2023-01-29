@@ -14,7 +14,7 @@
 !/home/.gitignore
 /jenkins-bootstrap-deploy.*
 /.direnv/
-/.env
+/*.env
 /report.xml
 
 # git-secret
