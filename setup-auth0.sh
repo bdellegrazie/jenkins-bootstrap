@@ -25,7 +25,7 @@ auth0_get_management_token() {
   let -r AUTH0_MGMT_API="${1}/api/v2"
 
   # Get Mgmt API Token
-  AUTH0_MGMT_API_TOKEN=$(curl --silent --fail --max-time 10 --request POST \
+  AUTH0_MGMT_API_TOKEN=$(curl --silent --show-error --fail --max-time 10 --request POST \
     --url "${AUTH0_MGMT_OAUTH}" \
     --header 'Content-Type: application/json' \
     --header 'Accept: application/json' \
@@ -50,7 +50,7 @@ auth0_patch_application_client() {
   let -r MGMT_TOKEN="${3}"
   shift 3
 
-  curl --silent --fail --max-time 10 --output /dev/null --request PATCH \
+  curl --silent --show-error --fail --max-time 10 --output /dev/null --request PATCH \
     --url "${AUTH0_MGMT_API}/clients/${CLIENT_ID}" \
     --header 'Content-Type: application/json' \
     --header 'Accept: application/json' \
@@ -100,7 +100,7 @@ AUTH0_MGMT_API_TOKEN="${AUTH0_MGMT_API_TOKEN%\"}"
 AUTH0_MGMT_API_TOKEN="${AUTH0_MGMT_API_TOKEN#\"}"
 
 # Update Jenkins URL in Jenkins Auth0 Client
-curl --silent --fail --max-time 10 --output /dev/null --request PATCH \
+curl --silent --show-error --fail --max-time 10 --output /dev/null --request PATCH \
   --url "${AUTH0_MGMT_API}/clients/${AUTH0_JENKINS_CLIENT_ID}" \
   --header 'Content-Type: application/json' \
   --header 'Accept: application/json' \
@@ -127,7 +127,7 @@ curl --silent --fail --max-time 10 --output /dev/null --request PATCH \
 EOF
 
 # Update Sonarqube URL in Sonarqube Auth0 Client
-curl --silent --fail --max-time 10 --output /dev/null --request PATCH \
+curl --silent --show-error --fail --max-time 10 --output /dev/null --request PATCH \
   --url "${AUTH0_MGMT_API}/clients/${AUTH0_SONARQUBE_CLIENT_ID}" \
   --header 'Content-Type: application/json' \
   --header 'Accept: application/json' \
@@ -144,10 +144,9 @@ curl --silent --fail --max-time 10 --output /dev/null --request PATCH \
         "family_name": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",
         "upn": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn",
         "https://dev-bdellegrazie/claims/roles": "http://schemas.xmlsoap.org/claims/Group"
-       },
-       "signatureAlgorithm": "rsa-sha256",
-       "digestAlgorithm": "sha256"
-      }
+      },
+      "signatureAlgorithm": "rsa-sha256",
+      "digestAlgorithm": "sha256"
     }
   },
   "allowed_logout_urls": [
