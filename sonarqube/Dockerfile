@@ -3,10 +3,13 @@ FROM quay.io/prometheuscommunity/elasticsearch-exporter:v1.5.0 as exporter
 FROM sonarqube:lts
 
 ARG BRANCH_PLUGIN_VERSION=1.8.3
+ARG SHELLCHECK_PLUGIN_VERSION=2.5.0
 ARG JMX_EXPORTER_VERSION=0.17.2
 
 RUN wget -c -q -T 30 -O /opt/sonarqube/extensions/plugins/sonarqube-community-branch-plugin-${BRANCH_PLUGIN_VERSION}.jar\
     https://github.com/mc1arke/sonarqube-community-branch-plugin/releases/download/${BRANCH_PLUGIN_VERSION}/sonarqube-community-branch-plugin-${BRANCH_PLUGIN_VERSION}.jar &&\
+    wget -c -q -T 30 -O /opt/sonarqube/extensions/plugins/sonar-shellcheck-plugin-${SHELLCHECK_PLUGIN_VERSION}.jar\
+    https://github.com/sbaudoin/sonar-shellcheck/releases/download/v${SHELLCHECK_PLUGIN_VERSION}/sonar-shellcheck-plugin-${SHELLCHECK_PLUGIN_VERSION}.jar &&\
   chown sonarqube:sonarqube /opt/sonarqube/extensions/plugins/*.jar &&\
   mkdir -p /opt/jmx_exporter &&\
   wget -c -q -T 30 -O /opt/jmx_exporter/jmx_prometheus_javaagent-${JMX_EXPORTER_VERSION}.jar\
