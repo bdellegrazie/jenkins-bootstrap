@@ -1,2 +1,3 @@
 *.secret
 *.secret.encrypted
+auth/

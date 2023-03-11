@@ -16,7 +16,7 @@ datasources:
     url: 'http://prometheus:9090'
     isDefault: true
     editable: false
-    prometheusVersion: 2.37.5
+    prometheusVersion: 2.37.6
     prometheusType: Prometheus
     jsonData:
       httpMethod: 'POST'

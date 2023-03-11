@@ -9,21 +9,6 @@ scrape_configs:
     static_configs:
       - targets: ['alertmanager:9093']
 
-  - job_name: 'blackbox'
-    metrics_path: /probe
-    params:
-      module: [sonar_health]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-          - http://sonarqube:9000/api/system/health
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: blackbox_exporter:9115  # The blackbox exporter's real hostname:port.
-
   #- job_name: 'cadvisor'
   #  static_configs:
   #    - targets: ['cadvisor:8080']
@@ -70,6 +55,14 @@ scrape_configs:
     static_configs:
       - targets: ['statsd:9102']
 
+  - job_name: 'sonarqube'
+    metrics_path: /api/monitoring/metrics
+    authorization:
+      credentials_file: /run/secrets/sonar_web_systempasscode
+
+    static_configs:
+      - targets: ['sonarqube:9000']
+
   - job_name: 'sonar-web'
     static_configs:
       - targets: ['sonarqube:10100']
@@ -81,6 +74,10 @@ scrape_configs:
   - job_name: 'sonar-search'
     static_configs:
       - targets: ['sonarqube:9114']
+
+rule_files:
+  - "elasticsearch_exporter-recording_rules.yml"
+  - "elasticsearch_exporter-alerting_rules.yml"
 
 alerting:
   alertmanagers:

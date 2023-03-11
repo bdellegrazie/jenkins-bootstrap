@@ -10,7 +10,7 @@ datasources:
     type: postgres
     url: db:5432
     database: jenkins
-    user: jenkins
+    user: grafanaro
     secureJsonData:
       password: $__file{/run/secrets/db_grafanaro}
     jsonData:

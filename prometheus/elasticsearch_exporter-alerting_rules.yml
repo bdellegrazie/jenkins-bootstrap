@@ -1,0 +1,84 @@
+---
+groups:
+  - name: elasticsearch-alerts
+    rules:
+      - alert: ElasticsearchTooFewNodesRunning
+        expr: elasticsearch_cluster_health_number_of_nodes < 3
+        for: 5m
+        annotations:
+          description: "There are only {{ $value }} < 3 ElasticSearch nodes running"
+          summary: ElasticSearch running on less than 3 nodes
+        labels:
+          severity: critical
+
+      - alert: ElasticsearchHeapTooHigh
+        expr: elasticsearch_heap_utilization_percentage > 90
+        for: 15m
+        annotations:
+          description: The heap usage is over 90% for 15m
+          summary: "ElasticSearch node {{ $labels.name }} heap usage is high"
+        labels:
+          severity: critical
+
+      - alert: ElasticsearchClusterNotHealthy
+        expr: elasticsearch_red_cluster_status
+        for: 2m
+        annotations:
+          message: "Cluster {{ $labels.cluster }} health status has been RED for at least 2m. Cluster does not accept writes, shards may be missing or master node hasn't been elected yet."
+          summary: Cluster health status is RED
+        labels:
+          severity: critical
+
+      - alert: ElasticsearchClusterNotHealthy
+        expr: elasticsearch_yellow_cluster_status
+        for: 20m
+        annotations:
+          message: "Cluster {{ $labels.cluster }} health status has been YELLOW for at least 20m. Some shard replicas are not allocated."
+          summary: "Cluster health status is YELLOW"
+        labels:
+          severity: warning
+
+      - alert: ElasticsearchNodeDiskWatermarkReached
+        expr: elasticsearch_node_disk_watermark_reached > 85
+        for: 5m
+        annotations:
+          message: "Disk Low Watermark Reached at {{ $labels.node }} node in {{ $labels.cluster }} cluster. Shards can not be allocated to this node anymore. You should consider adding more disk to the node."
+          summary: "Disk Low Watermark Reached - disk saturation is {{ $value }}%"
+        labels:
+          severity: warning
+
+      - alert: ElasticsearchNodeDiskWatermarkReached
+        expr: elasticsearch_node_disk_watermark_reached > 90
+        for: 5m
+        annotations:
+          message: "Disk High Watermark Reached at {{ $labels.node }} node in {{ $labels.cluster }} cluster. Some shards will be re-allocated to different nodes if possible. Make sure more disk space is added to the node or drop old indices allocated to this node."
+          summary: "Disk High Watermark Reached - disk saturation is {{ $value }}%"
+        labels:
+          severity: critical
+
+      - alert: ElasticsearchJVMHeapUseHigh
+        expr: elasticsearch_heap_utilization_percentage > 75
+        for: 10m
+        annotations:
+          message: "JVM Heap usage on the node {{ $labels.node }} in {{ $labels.cluster }} cluster is {{ $value }}%."
+          summary: JVM Heap usage on the node is high
+        labels:
+          severity: critical
+
+      - alert: SystemCPUHigh
+        expr: elasticsearch_os_cpu_high > 90
+        for: 1m
+        annotations:
+          message: "System CPU usage on the node {{ $labels.node }} in {{ $labels.cluster }} cluster is {{ $value }}%"
+          summary: System CPU usage is high
+        labels:
+          severity: critical
+
+      - alert: ElasticsearchProcessCPUHigh
+        expr: elasticsearch_process_cpu_high > 90
+        for: 1m
+        annotations:
+          message: "ES process CPU usage on the node {{ $labels.node }} in {{ $labels.cluster }} cluster is {{ $value }}%"
+          summary: ES process CPU usage is high
+        labels:
+          severity: critical

@@ -3,7 +3,7 @@ jenkins:
   securityRealm:
     oic:
       automanualconfigure: auto
-      #authorizationServerUrl: "${AUTH0_OIDC_BASE_URL}/authorize"
+      #authorizationServerUrl: "${AUTH0_TENANT_BASE_URL}/authorize"
       clientId: "${auth0_jenkins_client_id}"
       clientSecret: "${auth0_jenkins_client_secret}"
       disableSslVerification: false
@@ -11,13 +11,13 @@ jenkins:
       escapeHatchEnabled: false
       #escapeHatchSecret: "{AQAAABAAAAAQEWcyKHhH3EmJVbT0X88In8/XIARKUXcp0lbtSI33pzI=}"
       fullNameFieldName: "name"
-      groupsFieldName: "https://dev-bdellegrazie/claims/groups"
+      groupsFieldName: "${AUTH0_TENANT_CUSTOM_CLAIMS_NS}/groups"
       #logoutFromOpenidProvider: false
       #scopes: "email_verified address openid profile created_at given_name picture identities phone offline_access name nickname family_name email"
-      #tokenServerUrl: "${AUTH0_OIDC_BASE_URL}/oauth/token"
-      #userInfoServerUrl: "${AUTH0_OIDC_BASE_URL}/userinfo"
+      #tokenServerUrl: "${AUTH0_TENANT_BASE_URL}/oauth/token"
+      #userInfoServerUrl: "${AUTH0_TENANT_BASE_URL}/userinfo"
       userNameField: "sub"
-      wellKnownOpenIDConfigurationUrl: "${AUTH0_OIDC_BASE_URL}/.well-known/openid-configuration"
+      wellKnownOpenIDConfigurationUrl: "${AUTH0_TENANT_BASE_URL}/.well-known/openid-configuration"
 
 # Assuming the Auth0 Authorization Extension is in use:
 #  Needs an additional rule after the auth0-authorization-extension rule like:

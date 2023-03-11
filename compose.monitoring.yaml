@@ -15,7 +15,7 @@ services:
     ports:
       - '${ALERTMANAGER_PORT}:9093'
     healthcheck:
-      test: 'wget -q --spider http://127.0.0.1:9093/-/ready || exit 1'
+      test: ["CMD-SHELL", 'wget -q --spider http://127.0.0.1:9093/-/ready || exit 1']
       interval: 30s
       timeout: 10s
       retries: 3
@@ -43,7 +43,7 @@ services:
   #    start_period: 10s
 
   grafana:
-    image: 'grafana/grafana-oss:9.3.2'
+    image: 'grafana/grafana-oss:9.4.3'
     container_name: 'grafana'
     secrets:
       - db_grafanaro
@@ -51,38 +51,41 @@ services:
       - 'grafana-data:/var/lib/grafana'
       - './grafana/provisioning:/etc/grafana/provisioning:ro'
     environment:
-      #GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: ''
-      #GF_INSTALL_PLUGINS: ''
-      #GF_PLUGINS_ENABLE_ALPHA: 'true'  # Needed for AlertManager plugin
-      GF_LOG_MODE: 'console'
-      GF_LOG_LEVEL: 'warn'
-      GF_ANALYTICS_REPORTING_ENABLED: 'false'
+      GF_ALERTING_ENABLED: 'false'
       GF_ANALYTICS_CHECK_FOR_UPDATES: 'false'
+      GF_ANALYTICS_REPORTING_ENABLED: 'false'
+      GF_ANALYTICS_FEEDBACK_LINKS_ENABLED: 'false'
+      #GF_INSTALL_PLUGINS: ''
+      #GF_LOG_FILTERS: 'rendering:debug'
+      GF_LOG_LEVEL: 'warn'
+      GF_LOG_MODE: 'console'
+      #GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: ''
+      #GF_PLUGINS_ENABLE_ALPHA: ''
+      #GF_RENDERING_CALLBACK_URL: 'http://grafana:${GRAFANA_PORT}/'
+      #GF_RENDERING_SERVER_URL: 'http://renderer:8081/render'
+      GF_SERVER_ENABLE_GZIP: 'true'
+      GF_SNAPSHOTS_EXTERNAL_ENABLED: 'false'
+      GF_UNIFIED_ALERTING_ENABLED: 'true'
       # Disable all login prompts and security features
       # !!! THIS IS ONLY SUITABLE FOR LOCAL TESTING !!!
-      GF_SECURITY_DISABLE_GRAVATAR: 'true'
-      GF_AUTH_DISABLE_LOGIN_FORM: 'true'
-      GF_AUTH_DISABLE_SIGNOUT_MENU: 'true'
       GF_AUTH_ANONYMOUS_ENABLED: 'true'
       GF_AUTH_ANONYMOUS_ORG_ROLE: 'Admin'
       GF_AUTH_BASIC_ENABLED: 'true'
+      GF_AUTH_DISABLE_LOGIN_FORM: 'true'
+      GF_AUTH_DISABLE_SIGNOUT_MENU: 'true'
+      GF_SECURITY_DISABLE_GRAVATAR: 'true'
       GF_USERS_ALLOW_SIGN_UP: 'false'
-      #GF_RENDERING_SERVER_URL: 'http://renderer:8081/render'
-      #GF_RENDERING_CALLBACK_URL: 'http://grafana:${GRAFANA_PORT}/'
-      #GF_LOG_FILTERS: 'rendering:debug'
-      GF_UNIFIED_ALERTING_ENABLED: 'true'
-      GF_ALERTING_ENABLED: 'false'
     ports:
       - '${GRAFANA_PORT}:3000'
     healthcheck:
-      test: 'wget -q --spider http://127.0.0.1:3000/api/health || exit 1'
+      test: ["CMD-SHELL", 'wget -q --spider http://127.0.0.1:3000/api/health || exit 1']
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 10s
 
   prometheus:
-    image: 'quay.io/prometheus/prometheus:v2.37.5'
+    image: 'quay.io/prometheus/prometheus:v2.37.6'
     container_name: 'prometheus'
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -93,13 +96,14 @@ services:
       - '--web.enable-lifecycle'
     secrets:
       - nexus_admin
+      - sonar_web_systempasscode
     volumes:
       - 'prometheus-data:/prometheus'
-      - './prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro'
+      - './prometheus:/etc/prometheus:ro'
     ports:
       - '${PROMETHEUS_PORT}:9090'
     healthcheck:
-      test: 'wget -q --spider http://127.0.0.1:9090/-/ready || exit 1'
+      test: ["CMD-SHELL", 'wget -q --spider http://127.0.0.1:9090/-/ready || exit 1']
       interval: 30s
       timeout: 10s
       retries: 3
@@ -117,7 +121,7 @@ services:
   #    LOG_LEVEL: 'info'
   #    RENDERING_MODE: 'reusable'
   #  healthcheck:
-  #    test: 'wget -q --spider http://127.0.0.1:8081/metrics || exit 1'
+  #    test: ["CMD-SHELL", 'wget -q --spider http://127.0.0.1:8081/metrics || exit 1']
   #    interval: 30s
   #    timeout: 10s
   #    retries: 3
@@ -126,7 +130,7 @@ services:
   # exporter can double as statsd daemon
   # Intent was to get job metrics but not required if using the Prometheus plugin
   statsd:
-    image: 'quay.io/prometheus/statsd-exporter:v0.23.0'
+    image: 'quay.io/prometheus/statsd-exporter:v0.23.1'
     container_name: 'statsd'
     command:
       - --web.enable-lifecycle
@@ -138,7 +142,7 @@ services:
       - '9125'
       - '9125/udp'
     healthcheck:
-      test: 'wget -q --spider http://127.0.0.1:9102/ || exit 1'
+      test: ["CMD-SHELL", 'wget -q --spider http://127.0.0.1:9102/ || exit 1']
       interval: 30s
       timeout: 10s
       retries: 3
@@ -152,7 +156,7 @@ services:
   #  expose:
   #    - '9122'
   #  healthcheck:
-  #    test: 'wget -q --spider http://127.0.0.1:9122/ || exit 1'
+  #    test: ["CMD-SHELL", 'wget -q --spider http://127.0.0.1:9122/ || exit 1']
   #    interval: 30s
   #    timeout: 10s
   #    retries: 3
@@ -171,7 +175,7 @@ services:
     ports:
       - '9187:9187'
     healthcheck:
-      test: 'wget -q --spider http://127.0.0.1:9187/ || exit 1'
+      test: ["CMD-SHELL", 'wget -q --spider http://127.0.0.1:9187/ || exit 1']
       interval: 30s
       timeout: 10s
       retries: 3
@@ -188,7 +192,7 @@ services:
     expose:
       - '9115/tcp'
     healthcheck:
-      test: 'wget -q --spider http://127.0.0.1:9115/ || exit 1'
+      test: ["CMD-SHELL", 'wget -q --spider http://127.0.0.1:9115/ || exit 1']
       interval: 30s
       timeout: 10s
       retries: 3
