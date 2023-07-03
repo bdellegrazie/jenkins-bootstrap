@@ -37,6 +37,8 @@ services:
       - 'auth0_jenkins_client_secret'
       - 'bootstrap_ssh_deploy_key'
       - 'db_jenkins'
+      - 'db_dcadmin'
+      - 'db_dcuser'
     volumes:
       - 'jenkins-data:/var/jenkins_home'
       - './jenkins/casc_configs:/var/jenkins_home/casc_configs:ro'
@@ -102,6 +104,8 @@ services:
       - '5432'
     secrets:
       - db_admin
+      - db_dcadmin
+      - db_dcuser
       - db_grafanaro
       - db_jenkins
       - db_monitor
@@ -154,6 +158,10 @@ secrets:
     file: './secrets/jenkins-bootstrap-deploy.secret'
   db_admin:
     file: './db/admin.secret'
+  db_dcadmin:
+    file: './db/dcadmin.secret'
+  db_dcuser:
+    file: './db/dcuser.secret'
   db_grafanaro:
     file: './db/grafanaro.secret'
   db_jenkins:

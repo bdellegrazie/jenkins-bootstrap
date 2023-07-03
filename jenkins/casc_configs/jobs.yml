@@ -6,4 +6,4 @@ jobs:
       }
   - file: "${CASC_JENKINS_CONFIG}/jobs/seed.groovy"
   - script: >
-      queue('Admin/Seed')
+      queue('Admin/seed')

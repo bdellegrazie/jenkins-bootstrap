@@ -43,7 +43,7 @@ services:
   #    start_period: 10s
 
   grafana:
-    image: 'grafana/grafana-oss:9.4.3'
+    image: 'grafana/grafana-oss:10.0.1'
     container_name: 'grafana'
     secrets:
       - db_grafanaro
@@ -85,7 +85,7 @@ services:
       start_period: 10s
 
   prometheus:
-    image: 'quay.io/prometheus/prometheus:v2.37.6'
+    image: 'quay.io/prometheus/prometheus:v2.45.0'
     container_name: 'prometheus'
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -110,7 +110,7 @@ services:
       start_period: 10s
 
   #renderer:
-  #  image: 'grafana/grafana-image-renderer:3.6.3'
+  #  image: 'grafana/grafana-image-renderer:3.7.1'
   #  container_name: 'renderer'
   #  expose:
   #    - '8081'
@@ -130,7 +130,7 @@ services:
   # exporter can double as statsd daemon
   # Intent was to get job metrics but not required if using the Prometheus plugin
   statsd:
-    image: 'quay.io/prometheus/statsd-exporter:v0.23.1'
+    image: 'quay.io/prometheus/statsd-exporter:v0.24.0'
     container_name: 'statsd'
     command:
       - --web.enable-lifecycle
@@ -149,7 +149,7 @@ services:
       start_period: 10s
 
   #influxdb_exporter:
-  #  image: 'quay.io/prometheus/influxdb-exporter:v0.11.1'
+  #  image: 'quay.io/prometheus/influxdb-exporter:v0.11.4'
   #  container_name: 'influxdb'
   #  command:
   #    - --timestamps
@@ -163,7 +163,7 @@ services:
   #    start_period: 10s
 
   postgres_exporter:
-    image: 'quay.io/prometheuscommunity/postgres-exporter:v0.11.1'
+    image: 'quay.io/prometheuscommunity/postgres-exporter:v0.12.1'
     container_name: 'pg_exporter'
     command:
       - --auto-discover-databases
@@ -184,7 +184,7 @@ services:
       - db_monitor
 
   blackbox_exporter:
-    image: 'quay.io/prometheus/blackbox-exporter:v0.23.0'
+    image: 'quay.io/prometheus/blackbox-exporter:v0.24.0'
     container_name: 'blackbox_exporter'
     entrypoint: '/etc/blackbox_exporter/entrypoint.sh'
     command:

@@ -30,6 +30,27 @@ pipeline {
         }
       }
     }
+    stage("Security") {
+      environment {
+        DB_DC=credentials('dependency_check_db_user')
+      }
+      steps {
+        configFileProvider([configFile(fileId: 'dependency-check-props', replaceTokens: true, targetLocation: 'db.properties', variable: 'DB_DC_FILE')]) {
+          dependencyCheck additionalArguments: "--propertyfile '${env.DB_DC_FILE}' --noupdate --scan .", odcInstallation: 'v8'
+        }
+      }
+      post {
+        always {
+          dependencyCheckPublisher failedNewCritical: 1, 
+            failedTotalCritical: 1, 
+            stopBuild: true, 
+            newThresholdAnalysisExploitable: true, 
+            totalThresholdAnalysisExploitable: true, 
+            unstableNewCritical: 1, 
+            unstableTotalCritical: 1
+        }
+      }
+    }
     stage("Deploy") {
       steps {
         echo "Deploying..."

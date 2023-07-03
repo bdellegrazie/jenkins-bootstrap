@@ -1,5 +1,5 @@
-pipelineJob('Sample') {
-    description('Sample pipeline')
+pipelineJob('Admin/dependency-check-update') {
+    description('Dependency Check Update')
     properties {
         buildDiscarder {
             strategy {
@@ -55,12 +55,14 @@ pipelineJob('Sample') {
                     }
 
                 }
-                scriptPath('jenkins/pipelines/sample.Jenkinsfile')
+                scriptPath('jenkins/pipelines/Admin/dependency-check-update.Jenkinsfile')
             }
         }
         pipelineTriggers {
             triggers {
-                githubPush()
+                cron {
+                    spec('@daily')
+                }
             }
         }
     }

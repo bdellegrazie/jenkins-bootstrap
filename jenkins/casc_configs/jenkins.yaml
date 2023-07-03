@@ -90,6 +90,16 @@ credentials:
               privateKeySource:
                 directEntry:
                   privateKey: ${bootstrap_ssh_deploy_key}
+          - usernamePassword:
+              scope: GLOBAL
+              id: dependency_check_db_admin
+              username: dcadmin
+              password: "${db_dcadmin}"
+          - usernamePassword:
+              scope: GLOBAL
+              id: dependency_check_db_user
+              username: dcuser
+              password: "${db_dcuser}"
 
 unclassified:
   buildDiscarders:
@@ -116,6 +126,18 @@ unclassified:
     apiRateLimitChecker: ThrottleForNormalize
   gitHubPluginConfig:
     hookUrl: "${JENKINS_PUBLIC_URL}/github-webhook/"
+  globalConfigFiles:
+    configs:
+      - properties:
+          content: |
+            data.connection_string=jdbc:postgresql://db/dependencycheck
+            data.driver_name=org.postgresql.Driver
+            data.user=^${DB_DC_USR}
+            data.password=^${DB_DC_PSW}
+          id: "dependency-check-props"
+          isReplaceAll: true
+          name: "DependencyCheckProps"
+          providerId: "org.jenkinsci.plugins.configfiles.properties.PropertiesConfig"
   globalDatabaseConfiguration:
     database:
       postgreSQL:
@@ -159,7 +181,20 @@ unclassified:
   timestamper:
     allPipelines: true
     systemTimeFormat: "yyyy-MM-dd HH:mm:ss.SSS' | '"
+
 tool:
+  dependency-check:
+    installations:
+      - name: "v8"
+        properties:
+          - installSource:
+              installers:
+                - command:
+                    command: |
+                      curl -m 30 -fsSL https://github.com/jeremylong/DependencyCheck/releases/download/v8.3.1/dependency-check-8.3.1-release.zip -o dependency-check.zip
+                      unzip -u dependency-check.zip
+                      curl -m 30 -fsSL https://jdbc.postgresql.org/download/postgresql-42.6.0.jar -o dependency-check/plugins/postgresql-42.6.0.jar
+                    toolHome: "./dependency-check"
   git:
     installations:
       - home: "git"

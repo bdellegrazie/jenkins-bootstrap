@@ -13,6 +13,7 @@ credentials
 credentials-binding
 database
 database-postgresql
+dependency-check-jenkins-plugin
 docker-plugin
 #docker-workflow
 github
