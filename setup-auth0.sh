@@ -134,6 +134,7 @@ AUTH0_MGMT_CLIENT_ID="$(jq -r '.management.clientId' "${script_dir}/auth0/tenant
 AUTH0_MGMT_CLIENT_SECRET="$(jq -r '.management.clientSecret' "${script_dir}/auth0/tenant.json.secret")"
 AUTH0_JENKINS_CLIENT_NAME="Jenkins-Local"
 AUTH0_SONARQUBE_CLIENT_NAME="Sonarqube-Local"
+AUTH0_DTRACK_CLIENT_NAME="DependencyTrack-Local"
 
 AUTH0_MGMT_API_TOKEN="$(auth0_get_management_token "${AUTH0_TENANT_URL}" "${AUTH0_MGMT_CLIENT_ID}" "${AUTH0_MGMT_CLIENT_SECRET}")"
 auth0_get_application_clients "${AUTH0_TENANT_URL}" "${AUTH0_MGMT_API_TOKEN}" --output "${work_dir}/tenants.json" \
@@ -149,9 +150,18 @@ AUTH0_SONARQUBE_CLIENT_SECRET="$(cat "${work_dir}/tenants.json" | auth0_lookup_c
 AUTH0_SONARQUBE_SAML_METADATA_URL="${AUTH0_TENANT_URL}/samlp/metadata/${AUTH0_SONARQUBE_CLIENT_ID}"
 AUTH0_SONARQUBE_SAML_LOGOUT_REDIRECT_URL="${AUTH0_TENANT_URL}/v2/logout?client_id=${AUTH0_SONARQUBE_CLIENT_ID}&returnTo=$(urlencode ${AUTH0_SAML_LOGOUT_REDIRECT_URL})"
 
+AUTH0_DTRACK_CLIENT_ID="$(cat "${work_dir}/tenants.json" | auth0_lookup_client "${AUTH0_TENANT}" "${AUTH0_DTRACK_CLIENT_NAME}" client_id)"
+#AUTH0_DTRACK_CLIENT_SECRET="$(cat "${work_dir}/tenants.json" | auth0_lookup_client "${AUTH0_TENANT}" "${AUTH0_JENKINS_CLIENT_NAME}" client_secret)"
+AUTH0_DTRACK_OIDC_METADATA_URL="${AUTH0_TENANT_URL}"
+AUTH0_DTRACK_USERNAME_CLAIM="nickname"
+AUTH0_DTRACK_TEAMS_CLAIM="https://dev-bdellegrazie/claims/roles"
+
 cat >> "${script_dir}/.env" <<END
 AUTH0_TENANT_BASE_URL="${AUTH0_TENANT_URL}"
 AUTH0_TENANT_CUSTOM_CLAIMS_NS="${AUTH0_TENANT_CUSTOM_CLAIMS_NS}"
+AUTH0_DTRACK_CLIENT_ID="${AUTH0_DTRACK_CLIENT_ID}"
+AUTH0_DTRACK_USERNAME_CLAIM="${AUTH0_DTRACK_USERNAME_CLAIM}"
+AUTH0_DTRACK_TEAMS_CLAIM="${AUTH0_DTRACK_TEAMS_CLAIM}"
 END
 
 # Update Jenkins URL in Jenkins Auth0 Client
@@ -221,3 +231,13 @@ sonar.auth.saml.user.email=http://schemas.xmlsoap.org/ws/2005/05/identity/claims
 sonar.auth.saml.group.name=http://schemas.xmlsoap.org/claims/Group
 sonar.auth.saml.certificate.secured=${AUTH0_TENANT_SAML_PEM_AS_PROP%%\\}
 END
+
+# Update Dependency Track URL in Auth0 Client
+auth0_patch_application_client "${AUTH0_TENANT_URL}" "${AUTH0_MGMT_API_TOKEN}" "${AUTH0_DTRACK_CLIENT_ID}" --data-binary @- <<EOF
+{
+  "callbacks":[
+    "${DTRACK_PUBLIC_URL}/static/oidc-callback.html"
+  ],
+  "initiate_login_uri": "${DTRACK_PUBLIC_URL}"
+}
+EOF

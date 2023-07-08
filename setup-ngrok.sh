@@ -82,9 +82,11 @@ EOF
 ngrok_start_linux
 ngrok_tunnel jenkins 8080
 ngrok_tunnel sonarqube 9000
+ngrok_tunnel dtrack 8090
 
-cp "${script_dir}/.env.monitoring" "${script_dir}/.env"
+cat "${script_dir}/.env.ci" "${script_dir}/.env.monitoring" "${script_dir}/.env.dependency-track" > "${script_dir}/.env"
 cat >> "${script_dir}/.env" <<END
 JENKINS_PUBLIC_URL=${JENKINS_PUBLIC_URL}
 SONARQUBE_PUBLIC_URL=${SONARQUBE_PUBLIC_URL}
+DTRACK_PUBLIC_URL=${DTRACK_PUBLIC_URL}
 END

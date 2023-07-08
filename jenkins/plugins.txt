@@ -14,6 +14,7 @@ credentials-binding
 database
 database-postgresql
 dependency-check-jenkins-plugin
+dependency-track
 docker-plugin
 #docker-workflow
 github

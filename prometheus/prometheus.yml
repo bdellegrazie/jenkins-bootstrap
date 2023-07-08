@@ -13,6 +13,13 @@ scrape_configs:
   #  static_configs:
   #    - targets: ['cadvisor:8080']
 
+  - job_name: 'dtrack_api'
+    basic_auth:
+      username: 'monitor'
+      password_file: '/run/secrets/db_monitor'
+    static_configs:
+      - targets: ['dtrack-apiserver:8080']
+
   - job_name: 'grafana'
     static_configs:
       - targets: ['grafana:3000']

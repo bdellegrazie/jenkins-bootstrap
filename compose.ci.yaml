@@ -28,10 +28,11 @@ services:
       - 'DB_NAME=jenkins'
       - 'DB_HOSTNAME=db'
       - 'DB_USERNAME=jenkins'
+      - 'DTRACK_PUBLIC_URL'
       - 'JENKINS_PUBLIC_URL'
       - 'TRY_UPGRADE_IF_NO_MARKER=true'
     ports:
-      - '8080:8080'
+      - '${JENKINS_UI_PORT}:8080'
     secrets:
       - 'auth0_jenkins_client_id'
       - 'auth0_jenkins_client_secret'
@@ -39,6 +40,7 @@ services:
       - 'db_jenkins'
       - 'db_dcadmin'
       - 'db_dcuser'
+      - 'dtrack_apikey'
     volumes:
       - 'jenkins-data:/var/jenkins_home'
       - './jenkins/casc_configs:/var/jenkins_home/casc_configs:ro'
@@ -85,7 +87,7 @@ services:
       - '10101/tcp'
       - '9114/tcp'
     ports:
-      - "9000:9000"
+      - '${SONARQUBE_UI_PORT}:9000'
 
   db:
     image: 'postgres:14-alpine'
@@ -106,6 +108,7 @@ services:
       - db_admin
       - db_dcadmin
       - db_dcuser
+      - db_dtrack
       - db_grafanaro
       - db_jenkins
       - db_monitor
@@ -128,9 +131,9 @@ services:
   #  environment:
   #    NEXUS_SECURITY_RANDOMPASSWORD: 'false'  # pragma: allowlist secret
   #  ports:
-  #    - '8081:8081'
-  #    - '18090:18090'
-  #    - '18091:18091'
+  #    - '${NEXUS_UI_PORT}:8081'
+  #    - '${NEXUS_DOCKER1_PORT}:18090'
+  #    - '${NEXUS_DOCKER2_PORT}:18091'
   #  ulimits:
   #    nofile:
   #    soft: 65536
@@ -156,12 +159,16 @@ secrets:
     file: './auth0/Jenkins-Local.secret'
   bootstrap_ssh_deploy_key:
     file: './secrets/jenkins-bootstrap-deploy.secret'
+  dtrack_apikey:
+    file: './secrets/dtrack_volatile.secret'
   db_admin:
     file: './db/admin.secret'
   db_dcadmin:
     file: './db/dcadmin.secret'
   db_dcuser:
     file: './db/dcuser.secret'
+  db_dtrack:
+    file: './db/dtrack.secret'
   db_grafanaro:
     file: './db/grafanaro.secret'
   db_jenkins:

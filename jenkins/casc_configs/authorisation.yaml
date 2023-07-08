@@ -6,8 +6,8 @@ jenkins:
     roleBased:
       roles:
         global:
-          - assignments:
-              - "group-jenkins-admin"
+          - entries:
+              - group: "group-jenkins-admin"
             name: "admin"
             pattern: ".*"
             permissions:
@@ -51,8 +51,8 @@ jenkins:
               - "View/Create"
               - "View/Delete"
               - "View/Read"
-          - assignments:
-              - "group-jenkins-user"
+          - entries:
+              - group: "group-jenkins-user"
             name: "user"
             pattern: ".*"
             permissions:
