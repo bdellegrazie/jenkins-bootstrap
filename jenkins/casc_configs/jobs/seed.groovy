@@ -1,7 +1,7 @@
 job('Admin/seed') {
     parameters {
         gitParameter {
-            name('revision')
+            name('GIT_REVISION')
             type('BRANCH_TAG')
             branch('master')
             branchFilter('^origin/(.*)$')
@@ -17,7 +17,7 @@ job('Admin/seed') {
     }
     scm {
         git {
-            branch('master')
+            branch('${GIT_REVISION}')
             browser {
                 githubWeb {
                 repoUrl('https://github.com/bdellegrazie/jenkins-bootstrap/')

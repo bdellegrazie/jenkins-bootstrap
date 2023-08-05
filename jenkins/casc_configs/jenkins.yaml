@@ -90,6 +90,15 @@ credentials:
               privateKeySource:
                 directEntry:
                   privateKey: ${bootstrap_ssh_deploy_key}
+          - basicSSHUserPrivateKey:
+              scope: GLOBAL
+              id: gradle_java_sample_deploy_key
+              username: git
+              passphrase: ~
+              description: "Gradle Java Sample Deploy Key"
+              privateKeySource:
+                directEntry:
+                  privateKey: ${gradle_java_sample_ssh_deploy_key}
           - usernamePassword:
               scope: GLOBAL
               id: dependency_check_db_admin

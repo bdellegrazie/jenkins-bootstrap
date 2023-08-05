@@ -37,6 +37,7 @@ services:
       - 'auth0_jenkins_client_id'
       - 'auth0_jenkins_client_secret'
       - 'bootstrap_ssh_deploy_key'
+      - 'gradle_java_sample_ssh_deploy_key'
       - 'db_jenkins'
       - 'db_dcadmin'
       - 'db_dcuser'
@@ -103,7 +104,7 @@ services:
       retries: 3
       start_period: 30s
     expose:
-      - '5432'
+      - '5432/tcp'
     secrets:
       - db_admin
       - db_dcadmin
@@ -158,7 +159,9 @@ secrets:
   auth0_jenkins_client_secret:
     file: './auth0/Jenkins-Local.secret'
   bootstrap_ssh_deploy_key:
-    file: './secrets/jenkins-bootstrap-deploy.secret'
+    file: './secrets/jenkins-bootstrap-deploy.key.secret'
+  gradle_java_sample_ssh_deploy_key:
+    file: './secrets/gradle-java-sample-deploy.key.secret'
   dtrack_apikey:
     file: './secrets/dtrack_volatile.secret'
   db_admin:
