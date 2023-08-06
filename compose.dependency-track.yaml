@@ -20,7 +20,7 @@ secrets:
 
 services:
   dtrack-apiserver:
-    image: dependencytrack/apiserver
+    image: 'dependencytrack/apiserver:4.8.2'
     container_name: dtrack-api
     depends_on:
       - db
@@ -121,7 +121,7 @@ services:
     restart: unless-stopped
 
   dtrack-frontend:
-    image: dependencytrack/frontend
+    image: 'dependencytrack/frontend:4.8.1'
     depends_on:
       - dtrack-apiserver
     container_name: dtrack-fe

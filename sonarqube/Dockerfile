@@ -3,8 +3,9 @@ FROM quay.io/prometheuscommunity/elasticsearch-exporter:v1.5.0 as exporter
 FROM sonarqube:9.9-community
 
 ARG JMX_EXPORTER_VERSION=0.18.0
+# Change branch plugin version in sonar.properties too
 ARG BRANCH_PLUGIN_VERSION=1.14.0
-ARG CHECKSTYLE_PLUGIN_VERSION=10.12.0
+ARG CHECKSTYLE_PLUGIN_VERSION=10.12.1
 ARG DEPENDENCY_CHECK_PLUGIN_VERSION=4.0.0
 ARG FINDBUGS_PLUGIN_VERSION=4.2.3
 ARG PMD_PLUGIN_VERSION=3.4.0

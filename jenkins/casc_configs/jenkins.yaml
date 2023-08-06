@@ -113,6 +113,10 @@ credentials:
               scope: GLOBAL
               id: dtrack_apikey
               secret: "${dtrack_apikey}"
+          - string:
+              scope: GLOBAL
+              id: sonar_ci_token
+              secret: "${sonar_ci_token}"
 
 unclassified:
   buildDiscarders:
@@ -200,6 +204,15 @@ unclassified:
   scmGit:
     globalConfigEmail: "brett.dellegrazie+jenkins@gmail.com"
     globalConfigName: "Jenkins CI"
+  sonarglobalconfiguration:
+    buildWrapperEnabled: true
+    installations:
+      - name: "default"
+        credentialsId: 'sonar_ci_token'
+        serverUrl: "http://sonarqube:9000"
+        triggers:
+          skipScmCause: false
+          skipUpstreamCause: false
   timestamper:
     allPipelines: true
     systemTimeFormat: "yyyy-MM-dd HH:mm:ss.SSS' | '"

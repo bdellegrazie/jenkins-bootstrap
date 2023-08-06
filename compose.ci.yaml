@@ -42,6 +42,7 @@ services:
       - 'db_dcadmin'
       - 'db_dcuser'
       - 'dtrack_apikey'
+      - 'sonar_ci_token'
     volumes:
       - 'jenkins-data:/var/jenkins_home'
       - './jenkins/casc_configs:/var/jenkins_home/casc_configs:ro'
@@ -105,6 +106,8 @@ services:
       start_period: 30s
     expose:
       - '5432/tcp'
+    ports:
+      - '5432:5432'
     secrets:
       - db_admin
       - db_dcadmin
@@ -184,6 +187,8 @@ secrets:
     file: './sonarqube/auth_jwtbase64hs256secret.secret'
   sonar_jdbc_password:
     file: './db/sonarqube.secret'
+  sonar_ci_token:
+    file: './sonarqube/ci-token.secret'
   sonar_web_systempasscode:
     file: './sonarqube/web_systempasscode.secret'
 

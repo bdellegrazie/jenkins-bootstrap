@@ -22,6 +22,7 @@ github-autostatus
 github-branch-source
 github-scm-trait-commit-skip
 git
+git-forensics
 git-parameter
 htmlpublisher
 #influxdb
@@ -36,7 +37,9 @@ prometheus
 role-strategy
 #saml
 simple-theme-plugin
+sonar
 timestamper
 token-macro
+warnings-ng
 workflow-aggregator
 workflow-durable-task-step
