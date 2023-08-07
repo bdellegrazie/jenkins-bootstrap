@@ -28,6 +28,7 @@ services:
       - 'DB_NAME=jenkins'
       - 'DB_HOSTNAME=db'
       - 'DB_USERNAME=jenkins'
+      - 'DTRACK_API_URL_INTERNAL'
       - 'DTRACK_PUBLIC_URL'
       - 'JENKINS_PUBLIC_URL'
       - 'TRY_UPGRADE_IF_NO_MARKER=true'

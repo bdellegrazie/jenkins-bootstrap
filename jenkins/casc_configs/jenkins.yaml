@@ -44,6 +44,8 @@ jenkins:
             value: "true"
           - key: "CI_TYPE"
             value: "jenkins"
+          - key: "DTRACK_API_URL"
+            value: "${DTRACK_API_URL_INTERNAL}"
   markupFormatter:
     rawHtml:
       disableSyntaxHighlighting: false
@@ -147,7 +149,7 @@ unclassified:
     dependencyTrackPollingInterval: 10
     dependencyTrackPollingTimeout: 5
     dependencyTrackReadTimeout: 30
-    dependencyTrackUrl: "http://dtrack-apiserver:8080"
+    dependencyTrackUrl: "${DTRACK_API_URL_INTERNAL}"
   gitHubConfiguration:
     apiRateLimitChecker: ThrottleForNormalize
   gitHubPluginConfig:

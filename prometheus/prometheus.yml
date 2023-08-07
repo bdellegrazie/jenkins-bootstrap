@@ -20,6 +20,10 @@ scrape_configs:
     static_configs:
       - targets: ['dtrack-apiserver:8080']
 
+  - job_name: 'dtrack_exporter'
+    static_configs:
+      - targets: ['dtrack-exporter:9916']
+
   - job_name: 'grafana'
     static_configs:
       - targets: ['grafana:3000']

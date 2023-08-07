@@ -142,3 +142,12 @@ services:
     ports:
       - "${DTRACK_UI_PORT}:8080"
     restart: unless-stopped
+
+  dtrack-exporter:
+    image: 'ghcr.io/jetstack/dependency-track-exporter:0.1.2'
+    container_name: dtrack-exporter
+    environment:
+      - DEPENDENCY_TRACK_ADDR=http://dtrack-apiserver:8080
+      - DEPENDENCY_TRACK_API_KEY=SnsY8AK573uUz7txNk04qSrt0eMMJuNA
+    expose:
+      - '9916/tcp'
