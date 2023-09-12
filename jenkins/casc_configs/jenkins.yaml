@@ -19,7 +19,7 @@ jenkins:
               attach:
                 user: "jenkins"
             dockerTemplateBase:
-              image: "jenkins/inbound-agent"
+              image: "jenkins/inbound-agent:alpine-jdk17"
               network: "jenkins-bootstrap_default"
               volumes: ~
               environmentsString: ~

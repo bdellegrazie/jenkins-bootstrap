@@ -3,7 +3,7 @@ version: '3.9'
 
 services:
   alertmanager:
-    image: 'quay.io/prometheus/alertmanager:v0.25.0'
+    image: 'quay.io/prometheus/alertmanager:v0.26.0'
     container_name: 'alertmanager'
     command:
       - --config.file=/etc/alertmanager/config.yml
@@ -43,7 +43,7 @@ services:
   #    start_period: 10s
 
   grafana:
-    image: 'grafana/grafana-oss:10.0.3'
+    image: 'grafana/grafana-oss:10.0.5'
     container_name: 'grafana'
     secrets:
       - db_grafanaro
@@ -164,7 +164,7 @@ services:
   #    start_period: 10s
 
   postgres_exporter:
-    image: 'quay.io/prometheuscommunity/postgres-exporter:v0.12.1'
+    image: 'quay.io/prometheuscommunity/postgres-exporter:v0.13.2'
     container_name: 'pg_exporter'
     command:
       - --auto-discover-databases

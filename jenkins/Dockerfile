@@ -15,7 +15,7 @@ ARG user=jenkins
 ARG DOCKER_GROUP_NAME=docker
 ARG DOCKER_GROUP_GID=998
 RUN addgroup --system --gid ${DOCKER_GROUP_GID} ${DOCKER_GROUP_NAME} \
-  && addgroup ${user} ${DOCKER_GROUP_NAME}
+  && adduser ${user} ${DOCKER_GROUP_NAME}
 
 RUN mkdir -p /builds /workspaces && chown ${user}:${DOCKER_GROUP_GID} /builds /workspaces
 

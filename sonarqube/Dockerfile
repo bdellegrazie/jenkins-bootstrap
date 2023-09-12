@@ -1,4 +1,4 @@
-FROM quay.io/prometheuscommunity/elasticsearch-exporter:v1.5.0 as exporter
+FROM quay.io/prometheuscommunity/elasticsearch-exporter:v1.6.0 as exporter
 
 FROM sonarqube:9.9-community
 
