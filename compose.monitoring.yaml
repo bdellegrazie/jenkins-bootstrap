@@ -21,29 +21,8 @@ services:
       retries: 3
       start_period: 10s
 
-  #cadvisor:
-  #  image: 'gcr.io/cadvisor/cadvisor:v0.47.0'
-  #  container_name: 'cadvisor'
-  #  privileged: true
-  #  expose:
-  #    - '8080'
-  #  volumes:
-  #    - '/:/rootfs:ro'
-  #    - '/var/run:/var/run:ro'
-  #    - '/sys:/sys:ro'
-  #    - '/var/lib/docker/:/var/lib/docker/:ro'
-  #    - '/dev/disk/:/dev/disk:ro'
-  #  devices:
-  #    - '/dev/kmsg:/dev/kmsg'
-  #  healthcheck:
-  #    test: 'wget -q --spider http://127.0.0.1:8080/containers/ || exit 1'
-  #    interval: 30s
-  #    timeout: 10s
-  #    retries: 3
-  #    start_period: 10s
-
   grafana:
-    image: 'grafana/grafana-oss:10.0.5'
+    image: 'grafana/grafana-oss:10.1.5'
     container_name: 'grafana'
     secrets:
       - db_grafanaro
@@ -85,7 +64,7 @@ services:
       start_period: 10s
 
   prometheus:
-    image: 'quay.io/prometheus/prometheus:v2.45.0'
+    image: 'quay.io/prometheus/prometheus:v2.45.1'
     container_name: 'prometheus'
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -110,24 +89,6 @@ services:
       retries: 3
       start_period: 10s
 
-  #renderer:
-  #  image: 'grafana/grafana-image-renderer:3.7.1'
-  #  container_name: 'renderer'
-  #  expose:
-  #    - '8081/tcp'
-  #  environment:
-  #    BROWSER_TZ: 'Europe/London'
-  #    ENABLE_METRICS: 'true'
-  #    IGNORE_HTTPS_ERROR: 'true'
-  #    LOG_LEVEL: 'info'
-  #    RENDERING_MODE: 'reusable'
-  #  healthcheck:
-  #    test: ["CMD-SHELL", 'wget -q --spider http://127.0.0.1:8081/metrics || exit 1']
-  #    interval: 30s
-  #    timeout: 10s
-  #    retries: 3
-  #    start_period: 10s
-
   # exporter can double as statsd daemon
   # Intent was to get job metrics but not required if using the Prometheus plugin
   statsd:
@@ -149,22 +110,8 @@ services:
       retries: 3
       start_period: 10s
 
-  #influxdb_exporter:
-  #  image: 'quay.io/prometheus/influxdb-exporter:v0.11.4'
-  #  container_name: 'influxdb'
-  #  command:
-  #    - --timestamps
-  #  expose:
-  #    - '9122/tcp'
-  #  healthcheck:
-  #    test: ["CMD-SHELL", 'wget -q --spider http://127.0.0.1:9122/ || exit 1']
-  #    interval: 30s
-  #    timeout: 10s
-  #    retries: 3
-  #    start_period: 10s
-
   postgres_exporter:
-    image: 'quay.io/prometheuscommunity/postgres-exporter:v0.13.2'
+    image: 'quay.io/prometheuscommunity/postgres-exporter:v0.14.0'
     container_name: 'pg_exporter'
     command:
       - --auto-discover-databases

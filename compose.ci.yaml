@@ -15,8 +15,6 @@ services:
         - 'JENKINS_PUBLIC_URL'
       cache_from:
         - 'jenkins/jenkins:lts-slim'
-        - 'base'
-        - 'jenkins'
         - 'bdg/jenkins:latest'
     container_name: 'jenkins'
     environment:
@@ -58,7 +56,7 @@ services:
     build:
       context: './sonarqube/'
       cache_from:
-        - 'sonarqube:lts-community'
+        - 'sonarqube:9.9-community'
     container_name: sonarqube
     depends_on:
       - db
