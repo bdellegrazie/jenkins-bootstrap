@@ -17,6 +17,8 @@ secrets:
     file: './db/monitor.secret'
   db_dtrack:
     file: './db/dtrack.secret'
+  dtrack_key:
+    file: './secrets/dtrack_key.secret'
   dtrack_monitor:
     file: './secrets/dtrack-monitor_volatile.secret'
 
@@ -32,7 +34,7 @@ services:
       # https://docs.dependencytrack.org/getting-started/configuration/
       # All properties are upper case with periods replaced by underscores.
       - SYSTEM_REQUIREMENT_CHECK_ENABLED=false
-      #
+      - ALPINE_SECRET_KEY_PATH=/var/run/secrets/dtrack_api
       # Database Properties
       - ALPINE_DATABASE_MODE=external
       - ALPINE_DATABASE_URL=jdbc:postgresql://db:5432/dtrack
@@ -44,6 +46,8 @@ services:
       - ALPINE_DATABASE_POOL_MIN_IDLE=0
       - ALPINE_DATABASE_POOL_IDLE_TIMEOUT=300000
       - ALPINE_DATABASE_POOL_MAX_LIFETIME=600000
+      # 2nd level cache
+      - ALPINE_DATANUCLEUS_CACHE_LEVEL2_TYPE=none
       #
       # Optional LDAP Properties
       # - ALPINE_LDAP_ENABLED=true
@@ -116,6 +120,8 @@ services:
         condition: on-failure
     ports:
       - '${DTRACK_API_PORT}:8080'
+    secrets:
+      - dtrack_key
     volumes:
         # Optional volume mount to override default notification publisher templates
       #- "/host/path/to/template/base/dir:/data/templates"

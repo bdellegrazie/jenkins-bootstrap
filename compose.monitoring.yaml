@@ -22,7 +22,7 @@ services:
       start_period: 10s
 
   grafana:
-    image: 'grafana/grafana-oss:10.1.5'
+    image: 'grafana/grafana-oss:10.2.0'
     container_name: 'grafana'
     secrets:
       - db_grafanaro

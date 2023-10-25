@@ -57,6 +57,7 @@ services:
       context: './sonarqube/'
       cache_from:
         - 'sonarqube:9.9-community'
+        - 'bdg/sonarqube:latest'
     container_name: sonarqube
     depends_on:
       - db
