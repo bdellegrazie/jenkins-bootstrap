@@ -14,7 +14,7 @@ services:
         - 'DOCKER_GROUP_GID'
         - 'JENKINS_PUBLIC_URL'
       cache_from:
-        - 'jenkins/jenkins:lts-slim'
+        - 'jenkins/jenkins:lts-slim-jdk17'
         - 'bdg/jenkins:latest'
     container_name: 'jenkins'
     environment:
@@ -92,7 +92,7 @@ services:
       - '${SONARQUBE_UI_PORT}:9000'
 
   db:
-    image: 'postgres:14-alpine'
+    image: 'postgres:15-alpine'
     container_name: 'postgres'
     shm_size: '256m'
     environment:
@@ -123,7 +123,7 @@ services:
 
   #nexus:
   #    Fails to set the permissions of /nexus-data/etc/ to nexus:nexus
-  #  image: 'sonatype/nexus3:3.45.1'
+  #  image: 'sonatype/nexus3:3.63.0'
   #  container_name: 'nexus'
   #  user: 'nexus'
   #  configs:

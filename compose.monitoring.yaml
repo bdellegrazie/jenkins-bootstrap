@@ -22,7 +22,7 @@ services:
       start_period: 10s
 
   grafana:
-    image: 'grafana/grafana-oss:10.2.0'
+    image: 'grafana/grafana-oss:10.2.2'
     container_name: 'grafana'
     secrets:
       - db_grafanaro
@@ -92,7 +92,7 @@ services:
   # exporter can double as statsd daemon
   # Intent was to get job metrics but not required if using the Prometheus plugin
   statsd:
-    image: 'quay.io/prometheus/statsd-exporter:v0.24.0'
+    image: 'quay.io/prometheus/statsd-exporter:v0.25.0'
     container_name: 'statsd'
     command:
       - --web.enable-lifecycle
@@ -111,7 +111,7 @@ services:
       start_period: 10s
 
   postgres_exporter:
-    image: 'quay.io/prometheuscommunity/postgres-exporter:v0.14.0'
+    image: 'quay.io/prometheuscommunity/postgres-exporter:v0.15.0'
     container_name: 'pg_exporter'
     command:
       - --auto-discover-databases

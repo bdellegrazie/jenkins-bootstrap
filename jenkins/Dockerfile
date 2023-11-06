@@ -1,5 +1,5 @@
 # https://github.com/jenkinsci/docker/blob/master/Dockerfile-slim
-FROM jenkins/jenkins:lts-slim as base
+FROM jenkins/jenkins:lts-slim-jdk17 as base
 
 ARG BUILD_VERSION=0
 LABEL name="bdellegrazie/jenkins" vendor="brett.dellegrazie@gmail.com" version="${JENKINS_VERSION}-${BUILD_VERSION}"
