@@ -64,7 +64,7 @@ services:
       start_period: 10s
 
   prometheus:
-    image: 'quay.io/prometheus/prometheus:v2.45.1'
+    image: 'quay.io/prometheus/prometheus:v2.45.2'
     container_name: 'prometheus'
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -92,7 +92,7 @@ services:
   # exporter can double as statsd daemon
   # Intent was to get job metrics but not required if using the Prometheus plugin
   statsd:
-    image: 'quay.io/prometheus/statsd-exporter:v0.25.0'
+    image: 'quay.io/prometheus/statsd-exporter:v0.26.0'
     container_name: 'statsd'
     command:
       - --web.enable-lifecycle
