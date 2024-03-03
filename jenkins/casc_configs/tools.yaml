@@ -8,9 +8,9 @@ tool:
               installers:
                 - command:
                     command: |
-                      curl -m 30 -fsSL https://github.com/jeremylong/DependencyCheck/releases/download/v8.4.0/dependency-check-8.4.0-release.zip -o dependency-check.zip
+                      curl -m 30 -fsSL https://github.com/jeremylong/DependencyCheck/releases/download/v9.0.9/dependency-check-9.0.9-release.zip -o dependency-check.zip
                       unzip -o -u dependency-check.zip
-                      curl -m 30 -fsSL https://jdbc.postgresql.org/download/postgresql-42.6.0.jar -o dependency-check/plugins/postgresql-42.6.0.jar
+                      curl -m 30 -fsSL https://jdbc.postgresql.org/download/postgresql-42.7.2.jar -o dependency-check/plugins/postgresql-42.7.2.jar
                     toolHome: "./dependency-check"
   git:
     installations:

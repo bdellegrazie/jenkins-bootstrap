@@ -3,7 +3,7 @@ version: '3.9'
 
 services:
   alertmanager:
-    image: 'quay.io/prometheus/alertmanager:v0.26.0'
+    image: 'quay.io/prometheus/alertmanager:v0.27.0'
     container_name: 'alertmanager'
     command:
       - --config.file=/etc/alertmanager/config.yml
@@ -63,52 +63,36 @@ services:
       retries: 3
       start_period: 10s
 
-  prometheus:
-    image: 'quay.io/prometheus/prometheus:v2.45.2'
-    container_name: 'prometheus'
+  victoria-metrics:
+    image: 'victoriametrics/victoria-metrics:stable'
+    container_name: 'vmetrics'
     command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--web.listen-address=0.0.0.0:9090'
-      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-      - '--web.console.templates=/usr/share/prometheus/consoles'
-      - '--web.enable-lifecycle'
+      - '-promscrape.config=/etc/victoria-metrics/prometheus.yml'
+      - '-graphiteListenAddr=:2003'
+      - '-promscrape.config.strictParse=false'
     secrets:
       - db_monitor
       - nexus_admin
       - sonar_web_systempasscode
     volumes:
-      - 'prometheus-data:/prometheus'
-      - './prometheus:/etc/prometheus:ro'
+      - 'victoria-metrics-data:/victoria-metrics-data'
+      - './victoria-metrics:/etc/victoria-metrics:ro'
     ports:
-      - '${PROMETHEUS_PORT}:9090'
-    healthcheck:
-      test: ["CMD-SHELL", 'wget -q --spider http://127.0.0.1:9090/-/ready || exit 1']
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+      - '${VICTORIA_METRICS_PORT}:8428'
+      - '${VICTORIA_METRICS_STATSD_PORT}:2003'
 
-  # exporter can double as statsd daemon
-  # Intent was to get job metrics but not required if using the Prometheus plugin
-  statsd:
-    image: 'quay.io/prometheus/statsd-exporter:v0.26.0'
-    container_name: 'statsd'
+  vmalert:
+    image: 'victoriametrics/vmalert:stable'
+    container_name: 'vmalert'
     command:
-      - --web.enable-lifecycle
-      - --statsd.mapping-config=/tmp/statsd_mapping.yml
-    volumes:
-      - './statsd/statsd_mapping.yml:/tmp/statsd_mapping.yml'
-    expose:
-      - '9102'
-      - '9125'
-      - '9125/udp'
-    healthcheck:
-      test: ["CMD-SHELL", 'wget -q --spider http://127.0.0.1:9102/ || exit 1']
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+      - -datasource.url=http://victoriametrics:8428   # VM-single addr for executing rules expressions
+      - -remoteWrite.url=http://victoriametrics:8428  # VM-single addr to persist alerts state and recording rules results
+      - -remoteRead.url=http://victoriametrics:8428  # VM-single addr for restoring alerts state after restart
+      - -notifier.url=http://alertmanager:9093  # AlertManager addr to send alerts when they trigger
+    secrets:
+      - db_monitor
+      - nexus_admin
+      - sonar_web_systempasscode
 
   postgres_exporter:
     image: 'quay.io/prometheuscommunity/postgres-exporter:v0.15.0'
@@ -153,7 +137,7 @@ services:
 volumes:
   alertmanager-data:
   grafana-data:
-  prometheus-data:
+  victoria-metrics-data:
 
 secrets:
   db_monitor:

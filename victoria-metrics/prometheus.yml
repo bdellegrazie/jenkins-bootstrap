@@ -1,0 +1,71 @@
+---
+global:
+  scrape_interval: 15s  # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+
+scrape_configs:
+  - job_name: 'alertmanager'
+    static_configs:
+      - targets: ['alertmanager:9093']
+
+  - job_name: 'dtrack_api'
+    basic_auth:
+      username: 'monitor'
+      password_file: '/run/secrets/db_monitor'
+    static_configs:
+      - targets: ['dtrack-apiserver:8080']
+
+  - job_name: 'dtrack_exporter'
+    static_configs:
+      - targets: ['dtrack-exporter:9916']
+
+  - job_name: 'grafana'
+    static_configs:
+      - targets: ['grafana:3000']
+
+  - job_name: 'jenkins'
+    metrics_path: '/prometheus'
+    static_configs:
+      - targets: ['jenkins:8080']
+
+  #- job_name: 'nexus'
+  #  metrics_path: '/service/metrics/prometheus'
+  #  basic_auth:
+  #    username: 'admin'
+  #    password_file: '/run/secrets/nexus_admin'
+  #  static_configs:
+  #    - targets: ['nexus:8081']
+
+  - job_name: 'pg_exporter'
+    static_configs:
+      - targets: ['pg_exporter:9187']
+
+  - job_name: 'sonarqube'
+    metrics_path: /api/monitoring/metrics
+    authorization:
+      credentials_file: /run/secrets/sonar_web_systempasscode
+
+    static_configs:
+      - targets: ['sonarqube:9000']
+
+  - job_name: 'sonar-web'
+    static_configs:
+      - targets: ['sonarqube:10100']
+
+  - job_name: 'sonar-ce'
+    static_configs:
+      - targets: ['sonarqube:10101']
+
+  - job_name: 'sonar-search'
+    static_configs:
+      - targets: ['sonarqube:9114']
+
+#rule_files:
+#  - "elasticsearch_exporter-recording_rules.yml"
+#  - "elasticsearch_exporter-alerting_rules.yml"
+
+alerting:
+  alertmanagers:
+    - api_version: v2
+      static_configs:
+        - targets:
+            - 'alertmanager:9093'

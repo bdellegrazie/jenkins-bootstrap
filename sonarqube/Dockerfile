@@ -1,13 +1,13 @@
-FROM quay.io/prometheuscommunity/elasticsearch-exporter:v1.6.0 as exporter
+FROM quay.io/prometheuscommunity/elasticsearch-exporter:v1.7.0 as exporter
 
 FROM sonarqube:9.9-community
 
-ARG JMX_EXPORTER_VERSION=0.18.0
+ARG JMX_EXPORTER_VERSION=0.20.0
 # Change branch plugin version in sonar.properties too
 ARG BRANCH_PLUGIN_VERSION=1.14.0
 ARG CHECKSTYLE_PLUGIN_VERSION=10.12.5
-ARG DEPENDENCY_CHECK_PLUGIN_VERSION=4.0.0
-ARG FINDBUGS_PLUGIN_VERSION=4.2.6
+ARG DEPENDENCY_CHECK_PLUGIN_VERSION=4.0.1
+ARG FINDBUGS_PLUGIN_VERSION=4.2.8
 ARG PMD_PLUGIN_VERSION=3.4.0
 ARG SHELLCHECK_PLUGIN_VERSION=2.5.0
 
@@ -20,7 +20,7 @@ RUN \
  wget -c -q -T 30 -O /opt/sonarqube/extensions/plugins/sonar-dependency-check-plugin-${DEPENDENCY_CHECK_PLUGIN_VERSION}.jar\
   https://github.com/dependency-check/dependency-check-sonar-plugin/releases/download/${DEPENDENCY_CHECK_PLUGIN_VERSION}/sonar-dependency-check-plugin-${DEPENDENCY_CHECK_PLUGIN_VERSION}.jar &&\
  wget -c -q -T 30 -O /opt/sonarqube/extensions/plugins/sonar-findbugs-plugin-${FINDBUGS_PLUGIN_VERSION}.jar\
-  https://github.com/spotbugs/sonar-findbugs/releases/download/${FINDBUGS_PLUGIN_VERSION}/sonar-findbugs-plugin-${FINDBUGS_PLUGIN_VERSION}.jar &&\
+  https://repo.maven.apache.org/maven2/com/github/spotbugs/sonar-findbugs-plugin/${FINDBUGS_PLUGIN_VERSION}/sonar-findbugs-plugin-${FINDBUGS_PLUGIN_VERSION}.jar &&\
  wget -c -q -T 30 -O /opt/sonarqube/extensions/plugins/sonar-pmd-plugin-${PMD_PLUGIN_VERSION}.jar\
   https://github.com/jborgers/sonar-pmd/releases/download/${PMD_PLUGIN_VERSION}/sonar-pmd-plugin-${PMD_PLUGIN_VERSION}.jar &&\
  wget -c -q -T 30 -O /opt/sonarqube/extensions/plugins/sonar-shellcheck-plugin-${SHELLCHECK_PLUGIN_VERSION}.jar\

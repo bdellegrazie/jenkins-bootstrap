@@ -29,13 +29,13 @@ htmlpublisher
 job-dsl
 junit
 junit-sql-storage
-oic-auth
+#oic-auth
 pipeline-model-definition
 plain-credentials
 platformlabeler
 prometheus
 role-strategy
-#saml
+saml
 simple-theme-plugin
 sonar
 timestamper

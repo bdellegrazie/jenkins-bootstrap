@@ -7,10 +7,10 @@ services:
     build:
       context: './jenkins/'
       args:
-        #- 'AUTH0_SAML_METADATA_URL'
-        #- 'AUTH0_SAML_LOGOUT_URL'
-        - 'AUTH0_TENANT_BASE_URL'
-        - 'AUTH0_TENANT_CUSTOM_CLAIMS_NS'
+        - 'AUTH0_SAML_METADATA_URL'
+        - 'AUTH0_SAML_LOGOUT_URL'
+        #- 'AUTH0_TENANT_BASE_URL'
+        #- 'AUTH0_TENANT_CUSTOM_CLAIMS_NS'
         - 'DOCKER_GROUP_GID'
         - 'JENKINS_PUBLIC_URL'
       cache_from:
@@ -18,10 +18,10 @@ services:
         - 'bdg/jenkins:latest'
     container_name: 'jenkins'
     environment:
-      #- 'AUTH0_SAML_METADATA_URL'
-      #- 'AUTH0_SAML_LOGOUT_URL'
-      - 'AUTH0_TENANT_BASE_URL'
-      - 'AUTH0_TENANT_CUSTOM_CLAIMS_NS'
+      - 'AUTH0_JENKINS_SAML_METADATA_URL'
+      - 'AUTH0_JENKINS_SAML_LOGOUT_URL'
+      #- 'AUTH0_TENANT_BASE_URL'
+      #- 'AUTH0_TENANT_CUSTOM_CLAIMS_NS'
       - 'CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/'  # pragma: allowlist secret
       - 'DB_NAME=jenkins'
       - 'DB_HOSTNAME=db'

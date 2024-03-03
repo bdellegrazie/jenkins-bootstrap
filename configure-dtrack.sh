@@ -27,8 +27,16 @@ function _dtrack_api() {
   local -r _method="${1}"
   local -r _request="${2}"
   shift 2
+  local _option=()
+  case "${_method^}" in
+    GET) _option=("--get") ;;
+    HEAD) _option=("--head") ;;
+    POST) _option=("--post301" "--post302" "--data" "") ;;
+    *) _option=("--request" "${_method^}") ;;
+  esac
+
   curl -fsSL -m ${TIMEOUT} \
-    --request "${_method}" \
+    "${_option[@]}" \
     --header 'Content-Type: application/json' \
     --header 'Accept: application/json' \
     --header "X-Api-Key: ${API_KEY}" \

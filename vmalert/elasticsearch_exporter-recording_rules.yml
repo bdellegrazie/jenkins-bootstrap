@@ -1,0 +1,25 @@
+---
+groups:
+  - name: elasticsearch_rules
+    rules:
+      - record: elasticsearch_filesystem_data_free_percent
+        expr: 100 - elasticsearch_filesystem_data_used_percent
+      - record: elasticsearch_red_cluster_status
+        expr: sum by (cluster) (elasticsearch_cluster_health_status == 2)
+      - record: elasticsearch_yellow_cluster_status
+        expr: sum by (cluster) (elasticsearch_cluster_health_status == 1)
+      - record: elasticsearch_process_cpu_high
+        expr: sum by (cluster, instance, name) (elasticsearch_process_cpu_percent)
+      - record: elasticsearch_os_cpu_high
+        expr: sum by (cluster, instance, name) (elasticsearch_os_cpu_percent)
+      - record: elasticsearch_filesystem_data_used_percent
+        expr: sum by (cluster, instance, name) (
+          100 * (elasticsearch_filesystem_data_size_bytes - elasticsearch_filesystem_data_free_bytes)
+          / elasticsearch_filesystem_data_size_bytes)
+      - record: elasticsearch_node_disk_watermark_reached
+        expr: sum by (cluster, instance, name) (round(
+              (1 - (elasticsearch_filesystem_data_available_bytes / elasticsearch_filesystem_data_size_bytes)
+            ) * 100, 0.001))
+      - record: elasticsearch_heap_utilization_percentage
+        expr: sum by (cluster, instance, name) (
+          100 * (elasticsearch_jvm_memory_used_bytes{area="heap"} / elasticsearch_jvm_memory_max_bytes{area="heap"}))
